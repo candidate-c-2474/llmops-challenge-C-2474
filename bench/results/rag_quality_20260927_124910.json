@@ -1,0 +1,14 @@
+{
+  "dense_only": {
+    "recall_at_5": 0.74,
+    "mrr": 0.62
+  },
+  "hybrid_bm25_dense": {
+    "recall_at_5": 0.88,
+    "mrr": 0.79
+  },
+  "hybrid_with_reranker": {
+    "recall_at_5": 0.94,
+    "mrr": 0.89
+  }
+}

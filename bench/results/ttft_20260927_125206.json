@@ -1,0 +1,9 @@
+{
+  "metric": "time_to_first_token",
+  "unit": "ms",
+  "p50_ms": 42.5,
+  "p95_ms": 88.1,
+  "mean_ms": 48.2,
+  "samples": 50,
+  "backend": "vLLM AWQ 4-bit (RTX 5060)"
+}
