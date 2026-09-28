@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     image: pgvector/pgvector:pg16
@@ -36,6 +34,10 @@ services:
     container_name: roomfit-api
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface:ro
     environment:
       DATABASE_URL: postgresql://roomfit:roomfit@postgres:5432/roomfit
       POSTGRES_HOST: postgres
@@ -45,8 +47,11 @@ services:
       POSTGRES_DATABASE: roomfit
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      VLLM_URL: http://localhost:8001
-      LLAMACPP_URL: http://localhost:8080
+      VLLM_URL: http://172.25.12.152:8001/v1
+      LLAMACPP_URL: http://172.25.12.152:8001/v1
+      USE_FAKE_BACKEND: "false"
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
     depends_on:
       postgres:
         condition: service_healthy

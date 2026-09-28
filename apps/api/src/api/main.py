@@ -8,7 +8,7 @@ from api.middleware.rate_limit import RateLimitMiddleware
 from api.routes import health, admin, chat
 
 from inference_gateway import (
-    InferenceGateway, VLLMBackend, LlamaCppBackend, 
+    InferenceGateway, VLLMBackend, LlamaCppBackend,
     MetricsBackend, RetryBackend, CircuitBreaker
 )
 from rag_core.config import RAGConfig
@@ -41,11 +41,12 @@ app.add_middleware(
 app.add_middleware(StructuredLoggingMiddleware)
 app.add_middleware(RateLimitMiddleware, requests_per_minute=60)
 
+
 # Adapt the InferenceGateway to match the Agent's expected interface
 class GatewayAgentAdapter:
     def __init__(self, gateway: InferenceGateway):
         self.gateway = gateway
-        
+
     async def generate(self, messages, tools=None, temperature=0.3, max_tokens=1024, stream=False) -> dict:
         from inference_gateway import InferenceRequest
         # Map raw dictionary structures to Pydantic requirements
@@ -66,6 +67,7 @@ class GatewayAgentAdapter:
             "usage": res.usage
         }
 
+
 @app.on_event("startup")
 async def startup_event():
     # 1. Database Connection
@@ -79,7 +81,7 @@ async def startup_event():
     semantic_cache = SemanticCache(config.redis)
     await exact_cache.initialize(client=redis_client)
     await semantic_cache.initialize(client=redis_client)
-    
+
     # 3. Cache Invalidation Observer Setup
     bus = CatalogEventBus()
     invalidator = CacheInvalidator(exact_cache, semantic_cache)
@@ -94,29 +96,47 @@ async def startup_event():
 
     # 5. Tool Registry Setup
     registry = ToolRegistry()
-    create_search_catalog_tool(pipeline)
-    create_get_product_tool(repo)
-    create_check_fit_tool(repo)
-    create_compare_products_tool(repo)
+    create_search_catalog_tool(pipeline, registry)
+    create_get_product_tool(repo, registry)
+    create_check_fit_tool(repo, registry)
+    create_compare_products_tool(repo, registry)
+
+    # Fail-fast sanity check: the agent cannot work without registered tools.
+    assert len(registry) == 4, f"Expected 4 tools, got {registry.tool_names()}"
+    logger.info("api.tools_registered", tools=registry.tool_names())
 
     # 6. Primary and Fallback Backends Setup
-    raw_primary = VLLMBackend(base_url=config.vllm_url) if hasattr(config, 'vllm_url') else VLLMBackend()
-    raw_fallback = LlamaCppBackend(base_url=config.llamacpp_url) if hasattr(config, 'llamacpp_url') else LlamaCppBackend()
-    
+    import os
+    _use_fake = os.getenv("USE_FAKE_BACKEND", "false").lower() == "true"
+
+    if _use_fake:
+        from inference_gateway.fake_backend import FakeBackend
+        raw_primary = FakeBackend(name="fake_primary")
+        raw_fallback = FakeBackend(name="fake_fallback")
+        logger.warn("api.backend.fake_mode", reason="USE_FAKE_BACKEND=true")
+    else:
+        vllm_url = os.getenv("VLLM_URL", "http://172.25.12.152:8001/v1")
+        llamacpp_url = os.getenv("LLAMACPP_URL", vllm_url)
+        raw_primary = VLLMBackend(base_url=vllm_url, model_name="Qwen/Qwen2.5-1.5B-Instruct")
+        raw_fallback = VLLMBackend(base_url=llamacpp_url, model_name="Qwen/Qwen2.5-1.5B-Instruct")
+        logger.info("api.backend.real_mode", primary=vllm_url, fallback=llamacpp_url)
+
     # Apply Decorators (Metrics and Retries)
     primary = MetricsBackend(RetryBackend(raw_primary, max_retries=2))
     fallback = MetricsBackend(raw_fallback)
-    
+
     gateway = InferenceGateway(primary=primary, fallback=fallback)
     agent = AgentLoop(backend=GatewayAgentAdapter(gateway), tool_registry=registry, config=config.agent)
-    
+
     app.state.agent = agent
     logger.info("api.startup", status="fully_initialized_production")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
     await app.state.repository.close()
     logger.info("api.shutdown", status="completed")
+
 
 app.include_router(health.router)
 app.include_router(chat.router)

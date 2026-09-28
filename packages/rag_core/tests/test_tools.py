@@ -4,11 +4,11 @@ from rag_core.repository import InMemoryCatalogRepository
 from rag_core.models import Product, Dimensions, ToolCall
 from rag_core.tools import (
     ToolRegistry,
-    get_registry,
     create_check_fit_tool,
     create_get_product_tool,
-    create_compare_products_tool
+    create_compare_products_tool,
 )
+
 
 @pytest.mark.asyncio
 async def test_check_fit_tool():
@@ -24,9 +24,9 @@ async def test_check_fit_tool():
     )
     await repo.upsert_product(product)
 
-    # Factory registers check_fit into global registry
-    create_check_fit_tool(repo)
-    registry = get_registry()
+    # Explicit dependency injection — each test gets an isolated registry.
+    registry = ToolRegistry()
+    create_check_fit_tool(repo, registry)
 
     tool_call = ToolCall(
         name="check_fit",

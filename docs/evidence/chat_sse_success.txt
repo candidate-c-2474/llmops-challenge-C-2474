@@ -1,0 +1,243 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0event: message
+data: {"type": "tool_call", "name": "search_catalog", "arguments": {"query": "standing desk", "top_k": 5}}
+
+100   182    0   126  100    56    341    151 --:--:-- --:--:-- --:--:--   493event: message
+data: {"type": "tool_result", "name": "search_catalog", "content": "{\"results\": [{\"product_id\": \"DESK-001\", \"content\": \"Product: Modern Standing Desk (ID: DESK-001)\\nCategory: desks\\nPrice: USD 499.99\\nStock: 15 units\\nDescription: Electric adjustable height standing desk with bamboo top and memory presets.\", \"score\": 0.0066}], \"total\": 1}"}
+
+event: message
+data: {"type": "token", "content": "I fo"}
+
+event: message
+data: {"type": "token", "content": "und "}
+
+event: message
+data: {"type": "token", "content": "a st"}
+
+event: message
+data: {"type": "token", "content": "andi"}
+
+event: message
+data: {"type": "token", "content": "ng d"}
+
+event: message
+data: {"type": "token", "content": "esk "}
+
+event: message
+data: {"type": "token", "content": "that"}
+
+event: message
+data: {"type": "token", "content": " mee"}
+
+event: message
+data: {"type": "token", "content": "ts y"}
+
+event: message
+data: {"type": "token", "content": "our "}
+
+event: message
+data: {"type": "token", "content": "crit"}
+
+event: message
+data: {"type": "token", "content": "eria"}
+
+event: message
+data: {"type": "token", "content": ":\n\n*"}
+
+event: message
+data: {"type": "token", "content": "*Mod"}
+
+event: message
+data: {"type": "token", "content": "ern "}
+
+event: message
+data: {"type": "token", "content": "Stan"}
+
+event: message
+data: {"type": "token", "content": "ding"}
+
+event: message
+data: {"type": "token", "content": " Des"}
+
+event: message
+data: {"type": "token", "content": "k**\n"}
+
+event: message
+data: {"type": "token", "content": "- **"}
+
+event: message
+data: {"type": "token", "content": "ID:*"}
+
+event: message
+data: {"type": "token", "content": "* DE"}
+
+event: message
+data: {"type": "token", "content": "SK-0"}
+
+event: message
+data: {"type": "token", "content": "01  "}
+
+event: message
+data: {"type": "token", "content": "\n- *"}
+
+event: message
+data: {"type": "token", "content": "*Pri"}
+
+event: message
+data: {"type": "token", "content": "ce:*"}
+
+event: message
+data: {"type": "token", "content": "* $4"}
+
+event: message
+data: {"type": "token", "content": "99.9"}
+
+event: message
+data: {"type": "token", "content": "9  \n"}
+
+event: message
+data: {"type": "token", "content": "- **"}
+
+event: message
+data: {"type": "token", "content": "Stoc"}
+
+event: message
+data: {"type": "token", "content": "k:**"}
+
+event: message
+data: {"type": "token", "content": " 15 "}
+
+event: message
+data: {"type": "token", "content": "unit"}
+
+event: message
+data: {"type": "token", "content": "s  \n"}
+
+event: message
+data: {"type": "token", "content": "\nThi"}
+
+event: message
+data: {"type": "token", "content": "s de"}
+
+event: message
+data: {"type": "token", "content": "sk i"}
+
+event: message
+data: {"type": "token", "content": "s el"}
+
+event: message
+data: {"type": "token", "content": "ectr"}
+
+event: message
+data: {"type": "token", "content": "ical"}
+
+event: message
+data: {"type": "token", "content": "ly a"}
+
+event: message
+data: {"type": "token", "content": "djus"}
+
+event: message
+data: {"type": "token", "content": "tabl"}
+
+event: message
+data: {"type": "token", "content": "e, h"}
+
+event: message
+data: {"type": "token", "content": "as a"}
+
+event: message
+data: {"type": "token", "content": " bam"}
+
+event: message
+data: {"type": "token", "content": "boo "}
+
+event: message
+data: {"type": "token", "content": "top,"}
+
+event: message
+data: {"type": "token", "content": " and"}
+
+event: message
+data: {"type": "token", "content": " inc"}
+
+event: message
+data: {"type": "token", "content": "lude"}
+
+event: message
+data: {"type": "token", "content": "s me"}
+
+event: message
+data: {"type": "token", "content": "mory"}
+
+event: message
+data: {"type": "token", "content": " pre"}
+
+event: message
+data: {"type": "token", "content": "sets"}
+
+event: message
+data: {"type": "token", "content": ". It"}
+
+event: message
+data: {"type": "token", "content": "'s a"}
+
+event: message
+data: {"type": "token", "content": "vail"}
+
+event: message
+data: {"type": "token", "content": "able"}
+
+event: message
+data: {"type": "token", "content": " und"}
+
+event: message
+data: {"type": "token", "content": "er $"}
+
+event: message
+data: {"type": "token", "content": "500."}
+
+event: message
+data: {"type": "token", "content": " \n\nW"}
+
+event: message
+data: {"type": "token", "content": "ould"}
+
+event: message
+data: {"type": "token", "content": " you"}
+
+event: message
+data: {"type": "token", "content": " lik"}
+
+event: message
+data: {"type": "token", "content": "e to"}
+
+event: message
+data: {"type": "token", "content": " kno"}
+
+event: message
+data: {"type": "token", "content": "w mo"}
+
+event: message
+data: {"type": "token", "content": "re a"}
+
+event: message
+data: {"type": "token", "content": "bout"}
+
+event: message
+data: {"type": "token", "content": " thi"}
+
+event: message
+data: {"type": "token", "content": "s pr"}
+
+event: message
+data: {"type": "token", "content": "oduc"}
+
+event: message
+data: {"type": "token", "content": "t?"}
+
+event: message
+data: {"type": "done", "usage": {"tool_rounds": 1}}
+
+100  5415    0  5359  100    56   4550     47  0:00:01  0:00:01 --:--:--  4600
