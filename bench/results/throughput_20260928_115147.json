@@ -1,0 +1,10 @@
+{
+  "primary": {
+    "error": "All 20 requests failed",
+    "backend": "vLLM-AWQ4-GPU"
+  },
+  "fallback": {
+    "error": "All 10 requests failed",
+    "backend": "llamacpp-Q4KM-CPU"
+  }
+}

@@ -1,4 +1,4 @@
-# RoomFit Copilot — Candidate C-XXXX
+# RoomFit Copilot — Candidate C-2474
 
 > AI-powered furniture shopping assistant with hybrid RAG, tool-calling agent, dual-backend inference gateway, and SSE streaming UI.
 

@@ -1,4 +1,4 @@
-# Architecture Decisions — Candidate C-XXXX
+# Architecture Decisions — Candidate C-2474
 
 ## ADR-001: Model Selection and Quantization
 - **Decision**: Serve Qwen2.5-3B-Instruct quantized to AWQ 4-bit.

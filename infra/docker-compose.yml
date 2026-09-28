@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: roomfit-postgres
+    environment:
+      POSTGRES_DB: roomfit
+      POSTGRES_USER: roomfit
+      POSTGRES_PASSWORD: roomfit
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roomfit -d roomfit"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: roomfit-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    container_name: roomfit-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://roomfit:roomfit@postgres:5432/roomfit
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: roomfit
+      POSTGRES_PASSWORD: roomfit
+      POSTGRES_DATABASE: roomfit
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      VLLM_URL: http://localhost:8001
+      LLAMACPP_URL: http://localhost:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:

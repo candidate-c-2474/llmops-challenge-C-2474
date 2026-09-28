@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: roomfit-vllm-gpu
+    command: >
+      --model Qwen/Qwen2.5-3B-Instruct-AWQ
+      --quantization awq
+      --port 8001
+      --max-model-len 4096
+      --gpu-memory-utilization 0.65
+    ports:
+      - "8001:8001"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      HUGGING_FACE_HUB_TOKEN: ""
+
+  api:
+    environment:
+      VLLM_URL: http://vllm:8001
+    depends_on:
+      - vllm

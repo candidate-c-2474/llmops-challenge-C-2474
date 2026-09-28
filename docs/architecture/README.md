@@ -1,4 +1,4 @@
-# Architecture Package — Candidate C-XXXX
+# Architecture Package — Candidate C-2474
 
 Files:
 - component.md: Whole system architecture

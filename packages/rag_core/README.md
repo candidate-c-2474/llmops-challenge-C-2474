@@ -1,4 +1,4 @@
-# rag-core (Candidate C-XXXX)
+# rag-core (Candidate C-2474)
 
 Standalone, reusable Python package providing the hybrid RAG retrieval pipeline, multi-layer Redis caching, catalog repository, and agent tool-calling loop.
 

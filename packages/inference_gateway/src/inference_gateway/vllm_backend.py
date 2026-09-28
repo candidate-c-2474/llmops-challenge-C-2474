@@ -1,16 +1,25 @@
-from typing import AsyncIterator, Any
+"""
+Adapter Pattern: Maps vLLM's OpenAI-compatible streaming API to InferenceBackend.
+Normalizes response shapes and finish reasons.
+"""
+from __future__ import annotations
+import json
 import httpx
+import structlog
+from typing import AsyncIterator, Any
 from .interfaces import InferenceBackend, InferenceRequest, InferenceResponse
 
+logger = structlog.get_logger(__name__)
+
 class VLLMBackend(InferenceBackend):
-    def __init__(self, base_url: str = "http://vllm:8000/v1", model_name: str = "Qwen/Qwen2.5-3B-Instruct-AWQ"):
+    def __init__(self, base_url: str = "http://vllm:8001/v1", model_name: str = "Qwen/Qwen2.5-3B-Instruct-AWQ"):
         self.base_url = base_url.rstrip("/")
         self.model_name = model_name
-        self.client = httpx.AsyncClient(base_url=self.base_url, timeout=30.0)
+        self.client = httpx.AsyncClient(base_url=self.base_url, timeout=120.0)
 
     @property
     def name(self) -> str:
-        return "vllm"
+        return f"vllm:{self.model_name}"
 
     async def generate(self, request: InferenceRequest) -> InferenceResponse:
         payload = {
@@ -18,13 +27,16 @@ class VLLMBackend(InferenceBackend):
             "messages": request.messages,
             "temperature": request.temperature,
             "max_tokens": request.max_tokens,
+            "stream": False
         }
         if request.tools:
             payload["tools"] = request.tools
+        
         resp = await self.client.post("/chat/completions", json=payload)
         resp.raise_for_status()
         data = resp.json()
         choice = data["choices"][0]["message"]
+        
         return InferenceResponse(
             content=choice.get("content"),
             tool_calls=choice.get("tool_calls"),
@@ -34,4 +46,37 @@ class VLLMBackend(InferenceBackend):
         )
 
     async def generate_stream(self, request: InferenceRequest) -> AsyncIterator[dict[str, Any]]:
-        yield {"type": "token", "content": "vLLM streaming response chunk"}
+        payload = {
+            "model": self.model_name,
+            "messages": request.messages,
+            "temperature": request.temperature,
+            "max_tokens": request.max_tokens,
+            "stream": True
+        }
+        if request.tools:
+            payload["tools"] = request.tools
+
+        req = self.client.build_request("POST", "/chat/completions", json=payload)
+        resp = await self.client.send(req, stream=True)
+        
+        try:
+            resp.raise_for_status()
+            async for line in resp.aiter_lines():
+                if not line.strip():
+                    continue
+                if line.startswith("data: "):
+                    data_str = line[6:].strip()
+                    if data_str == "[DONE]":
+                        break
+                    chunk = json.loads(data_str)
+                    choice = chunk["choices"][0]
+                    delta = choice.get("delta", {})
+                    
+                    yield {
+                        "type": "token",
+                        "content": delta.get("content", ""),
+                        "tool_calls": delta.get("tool_calls"),
+                        "finish_reason": choice.get("finish_reason")
+                    }
+        finally:
+            await resp.aclose()

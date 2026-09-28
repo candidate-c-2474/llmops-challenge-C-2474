@@ -1,137 +1,87 @@
-import { useState, useRef, useCallback } from 'react';
-import { Message, StreamMetrics } from '../types/chat';
+// useTokenStream.ts
+import { useState, useRef } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export interface MetricStrip {
+  ttft_ms: number;
+  tokens_per_sec: number;
+  cache_hit: boolean;
+  backend: string;
+}
+
+export interface ChatEvent {
+  type: "token" | "tool_call" | "tool_result" | "done" | "error";
+  content?: string;
+  name?: string;
+  arguments?: Record<string, any>;
+  metrics?: MetricStrip;
+}
 
 export function useTokenStream() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [metrics, setMetrics] = useState<StreamMetrics>({
-    ttftMs: null,
-    tokensPerSec: null,
-    totalTokens: 0,
-    cacheHit: null,
-    activeBackend: 'vLLM (GPU)',
-    elapsedSec: null,
-  });
-
+  const [streamData, setStreamData] = useState<string>("");
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const [metrics, setMetrics] = useState<MetricStrip | null>(None);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const stopStreaming = useCallback(() => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-      setIsStreaming(false);
-    }
-  }, []);
-
-  const sendMessage = useCallback(async (userQuery: string) => {
-    if (!userQuery.trim() || isStreaming) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: userQuery,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
+  const startStream = async (message: string, history: any[] = []) => {
+    setStreamData("");
     setIsStreaming(true);
-
-    const assistantMsgId = (Date.now() + 1).toString();
-    const assistantMessage: Message = {
-      id: assistantMsgId,
-      role: 'assistant',
-      content: '',
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, assistantMessage]);
-
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
-    const startTime = performance.now();
-    let firstTokenTime: number | null = null;
-    let tokenCount = 0;
+    setMetrics(null);
+    
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
 
     try {
-      const response = await fetch(`${API_URL}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userQuery }),
-        signal: controller.signal,
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, history }),
+        signal: abortController.signal
       });
 
-      if (!response.ok || !response.body) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
+      if (!response.body) throw new Error("ReadableStream not supported.");
+      
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let buffer = "";
 
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n\n');
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const rawData = line.replace('data: ', '').trim();
-            if (!rawData) continue;
-
-            try {
-              const event = JSON.parse(rawData);
-
-              if (event.type === 'token') {
-                if (!firstTokenTime) {
-                  firstTokenTime = performance.now();
-                  const ttft = Math.round(firstTokenTime - startTime);
-                  setMetrics((m) => ({ ...m, ttftMs: ttft }));
-                }
-
-                tokenCount += 1;
-                const elapsed = (performance.now() - startTime) / 1000;
-                const tps = tokenCount / Math.max(elapsed, 0.001);
-
-                setMetrics((m) => ({
-                  ...m,
-                  totalTokens: tokenCount,
-                  tokensPerSec: Math.round(tps * 10) / 10,
-                  elapsedSec: Math.round(elapsed * 10) / 10,
-                }));
-
-                setMessages((prev) =>
-                  prev.map((msg) =>
-                    msg.id === assistantMsgId
-                      ? { ...msg, content: msg.content + event.content }
-                      : msg
-                  )
-                );
-              }
-            } catch (err) {
-              // Non-JSON or SSE event line
-            }
+          if (!line.trim() || !line.startsWith("data: ")) continue;
+          const parsed: ChatEvent = JSON.parse(line.slice(6));
+          
+          if (parsed.type === "token" && parsed.content) {
+            setStreamData((prev) => prev + parsed.content);
+          } else if (parsed.type === "done" && parsed.metrics) {
+            setMetrics(parsed.metrics);
+          } else if (parsed.type === "error") {
+            setStreamData((prev) => prev + `\nError: ${parsed.content}`);
           }
         }
       }
-    } catch (error: unknown) {
-      if ((error as Error).name !== 'AbortError') {
-        console.error('Stream error:', error);
+    } catch (err: any) {
+      if (err.name === "AbortError") {
+        setStreamData((prev) => prev + "\n[Generation Canceled by User]");
+      } else {
+        setStreamData((prev) => prev + `\n[Stream Error: ${err.message}]`);
       }
     } finally {
       setIsStreaming(false);
       abortControllerRef.current = null;
     }
-  }, [isStreaming]);
-
-  return {
-    messages,
-    sendMessage,
-    isStreaming,
-    stopStreaming,
-    metrics,
   };
+
+  const cancelStream = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+  };
+
+  return { streamData, isStreaming, metrics, startStream, cancelStream };
 }

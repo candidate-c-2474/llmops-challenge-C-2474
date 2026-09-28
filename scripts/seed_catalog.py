@@ -1,55 +1,124 @@
 #!/usr/bin/env python3
 """
-Seed Catalog Script — Populates Postgres database with furniture products.
-Works seamlessly both inside Docker containers and directly from WSL host.
-Candidate ID: C-XXXX
+Sovereign Catalog Seeder: Creates SQL schemas, compiles pgvector indexing,
+loads catalog.jsonl, and generates local vector embeddings.
+"""
+import os
+import sys
+import json
+from pathlib import Path
+import asyncio
+import asyncpg
+from sentence_transformers import SentenceTransformer
+
+CATALOG_PATH = Path(__file__).parent.parent / "data" / "catalog.jsonl"
+DB_URL = os.getenv("DATABASE_URL", "postgresql://roomfit:roomfit123@localhost:5432/roomfit")
+
+SCHEMA_SQL = """
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+CREATE TABLE IF NOT EXISTS products (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    currency TEXT DEFAULT 'USD',
+    stock INTEGER NOT NULL DEFAULT 0,
+    width DOUBLE PRECISION,
+    height DOUBLE PRECISION,
+    depth DOUBLE PRECISION,
+    weight_kg DOUBLE PRECISION,
+    description TEXT,
+    tags TEXT[],
+    embedding vector(384),
+    search_vector tsvector,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+);
+
+CREATE INDEX IF NOT EXISTS idx_products_embedding ON products USING hnsw (embedding vector_cosine_ops);
+CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING gin (search_vector);
 """
 
-import asyncio
-import json
-import socket
-from pathlib import Path
-from rag_core.config import PostgresConfig
-from rag_core.repository import PostgresCatalogRepository
-from rag_core.models import Product, Dimensions
+TRIGGER_SQL = """
+CREATE OR REPLACE FUNCTION products_search_vector_update() RETURNS trigger AS $$
+begin
+  new.search_vector :=
+     setweight(to_tsvector('english', coalesce(new.name, '')), 'A') ||
+     setweight(to_tsvector('english', coalesce(new.description, '')), 'B') ||
+     setweight(to_tsvector('english', coalesce(new.category, '')), 'C');
+  return new;
+end
+$$ LANGUAGE plpgsql;
 
-CATALOG_FILE = Path(__file__).parent.parent / "data" / "catalog.jsonl"
+DROP TRIGGER IF EXISTS trg_products_search_vector_update ON products;
+CREATE TRIGGER trg_products_search_vector_update
+BEFORE INSERT OR UPDATE ON products
+FOR EACH ROW EXECUTE FUNCTION products_search_vector_update();
+"""
 
 async def seed():
-    print("🌱 Seeding database from catalog.jsonl...")
-    if not CATALOG_FILE.exists():
-        print(f"❌ Error: Catalog file not found at {CATALOG_FILE}")
-        return
-
-    config = PostgresConfig()
+    print(f"Connecting to database: {DB_URL}")
+    conn = await asyncpg.connect(DB_URL)
     
-    # Try resolving host; fallback to 127.0.0.1 if running on local host outside Docker
-    try:
-        socket.gethostbyname(config.host)
-    except socket.gaierror:
-        print(f"ℹ️  Host '{config.host}' not found in local DNS. Falling back to '127.0.0.1' for local execution.")
-        config = PostgresConfig(host="127.0.0.1")
+    # 1. Set up schemas
+    print("Provisioning Postgres schema and extensions...")
+    await conn.execute(SCHEMA_SQL)
+    await conn.execute(TRIGGER_SQL)
 
-    repo = PostgresCatalogRepository(config)
-    
-    try:
-        await repo.initialize()
-        products = []
-        with open(CATALOG_FILE, "r", encoding="utf-8") as f:
-            for line in f:
-                if line.strip():
-                    item = json.loads(line)
-                    dims = Dimensions(**item.pop("dimensions")) if "dimensions" in item else None
-                    products.append(Product(**item, dimensions=dims))
+    if not CATALOG_PATH.exists():
+        print(f"Error: Catalog file not found at {CATALOG_PATH}")
+        sys.exit(1)
 
-        for p in products:
-            await repo.upsert_product(p)
-        print(f"✅ Successfully seeded {len(products)} products into Postgres ({config.host}:{config.port}).")
-    except Exception as e:
-        print(f"ℹ️  Postgres not reachable ({e}).")
-        print("   (Run 'docker compose up postgres' first to seed into live database).")
-    finally:
-        await repo.close()
+    # 2. Setup Embedding Generator
+    print("Loading SentenceTransformer model (all-MiniLM-L6-v2) on CPU...")
+    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device="cpu")
+
+    # 3. Read and Parse JSONL
+    print("Parsing catalog and generating vector embeddings...")
+    products = []
+    with open(CATALOG_PATH, "r") as f:
+        for line in f:
+            if line.strip():
+                products.append(json.loads(line))
+
+    print(f"Found {len(products)} products. Starting database ingestion...")
+    for idx, p in enumerate(products):
+        dims = p.get("dimensions", {})
+        width = dims.get("width_cm")
+        height = dims.get("height_cm")
+        depth = dims.get("depth_cm")
+        weight = dims.get("weight_kg")
+        
+        # Format product metadata for embedding generation
+        text_payload = f"Product: {p['name']}. Category: {p['category']}. Description: {p['description']}"
+        vector = model.encode(text_payload, normalize_embeddings=True).tolist()
+        vector_str = "[" + ",".join(str(x) for x in vector) + "]"
+
+        await conn.execute("""
+            INSERT INTO products (id, name, category, price, currency, stock, width, height, depth, weight_kg, description, tags, embedding)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::vector)
+            ON CONFLICT (id) DO UPDATE SET
+                name = EXCLUDED.name,
+                category = EXCLUDED.category,
+                price = EXCLUDED.price,
+                stock = EXCLUDED.stock,
+                width = EXCLUDED.width,
+                height = EXCLUDED.height,
+                depth = EXCLUDED.depth,
+                weight_kg = EXCLUDED.weight_kg,
+                description = EXCLUDED.description,
+                tags = EXCLUDED.tags,
+                embedding = EXCLUDED.embedding,
+                updated_at = TIMEZONE('utc', NOW())
+        """, p["id"], p["name"], p["category"], float(p["price"]), p.get("currency", "USD"), int(p.get("stock", 0)),
+             width, height, depth, weight, p.get("description", ""), p.get("tags", []), vector_str)
+        
+        if (idx + 1) % 100 == 0:
+            print(f"  Ingested {idx + 1}/{len(products)} products...")
+
+    print("✅ Catalog successfully seeded and indexed.")
+    await conn.close()
 
 if __name__ == "__main__":
     asyncio.run(seed())

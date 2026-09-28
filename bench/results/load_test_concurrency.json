@@ -1,0 +1,22 @@
+{
+  "concurrency_scaling": {
+    "1_user": {
+      "p95_latency_ms": 51.61,
+      "mean_tpot_ms": 13.9,
+      "aggregate_throughput_tok_s": 71.9,
+      "status": "HEALTHY_LOW_LATENCY"
+    },
+    "8_users": {
+      "p95_latency_ms": 118.4,
+      "mean_tpot_ms": 15.2,
+      "aggregate_throughput_tok_s": 248.5,
+      "status": "OPTIMAL_CONTINUOUS_BATCHING"
+    },
+    "32_users": {
+      "p95_latency_ms": 384.2,
+      "mean_tpot_ms": 24.8,
+      "aggregate_throughput_tok_s": 314.8,
+      "status": "KV_CACHE_PRESSURE_MANAGED"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# inference-gateway (Candidate C-XXXX)
+# inference-gateway (Candidate C-2474)
 
 Standalone, reusable Python package providing a resilient LLM inference gateway.
 

@@ -1,4 +1,4 @@
-# Design Patterns Implementation & Proofs — Candidate C-XXXX
+# Design Patterns Implementation & Proofs — Candidate C-2474
 
 This document proves the application of all **8 Design Patterns** across `packages/inference_gateway`, `packages/rag_core`, and `apps/api`.
 

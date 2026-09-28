@@ -1,7 +1,14 @@
+"""
+Observer Pattern: Listens to CatalogEvents and performs surgical, non-destructive cache invalidation.
+Links Redis exact/semantic hashes to specific product IDs.
+"""
 from abc import ABC, abstractmethod
+import structlog
 from rag_core.models import CatalogUpdate, CatalogEvent
 from rag_core.cache.exact_cache import ExactCache
 from rag_core.cache.semantic_cache import SemanticCache
+
+logger = structlog.get_logger(__name__)
 
 class CatalogObserver(ABC):
     @abstractmethod
@@ -14,18 +21,29 @@ class CacheInvalidator(CatalogObserver):
 
     async def on_catalog_update(self, update: CatalogUpdate) -> None:
         if update.event == CatalogEvent.PRODUCT_CREATED:
-            return
-        await self._exact.invalidate_all()
-        await self._semantic.invalidate_all()
+            return  # No stale entries exist for newly created products
+
+        logger.info("cache.invalidation.start", event=update.event.value, products=update.product_ids)
+        invalidated_count = 0
+        
+        for pid in update.product_ids:
+            # Clear associated Redis keys
+            count_exact = await self._exact.invalidate_by_product_id(pid)
+            count_semantic = await self._semantic.invalidate_by_product_id(pid)
+            invalidated_count += (count_exact + count_semantic)
+            
+        logger.info("cache.invalidation.completed", total_purged=invalidated_count)
 
 class CatalogEventBus:
     def __init__(self):
-        self._observers = []
+        self._observers: list[CatalogObserver] = []
+
     def subscribe(self, observer: CatalogObserver):
         self._observers.append(observer)
+
     async def publish(self, update: CatalogUpdate):
         for observer in self._observers:
             try:
                 await observer.on_catalog_update(update)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error("event_bus.publish.error", observer=observer.__class__.__name__, error=str(e))
