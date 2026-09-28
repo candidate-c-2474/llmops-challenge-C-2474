@@ -1,13 +1,39 @@
-
-
 # Arquivos privados de contexto da IA local (Bloqueados para manter anonimato)
 docs/HANDOFF_QWEN_LOCAL.md
 docs/DEFENSE_CONTEXT.md
 
-# Python cache
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
 
-# Environment
+# Environments
 .env
+.env.*
+.venv/
+venv/
+env/
+ENV/
+
+# Modelos grandes (não commitar)
+*.gguf
+*.safetensors
+*.bin
+infra/models/
+
+# Dados gerados localmente
+data/catalog_full.jsonl
+data/catalog_anchors_backup.jsonl
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
