@@ -27,32 +27,46 @@ class ExactCache:
         key = self._cache_key(query)
         data = json.dumps([c.model_dump() for c in chunks])
         
-        pipe = self._client.pipeline()
-        pipe.set(key, data, ex=ttl or self._config.exact_cache_ttl)
-        
-        # Link the query to individual product IDs
-        for chunk in chunks:
-            product_set_key = f"{self.PRODUCT_MAP_PREFIX}{chunk.product_id}"
-            pipe.sadd(product_set_key, key)
-            pipe.expire(product_set_key, ttl or self._config.exact_cache_ttl)
-        await pipe.execute()
+        if hasattr(self._client, "pipeline"):
+            pipe = self._client.pipeline()
+            pipe.set(key, data, ex=ttl or self._config.exact_cache_ttl)
+            for chunk in chunks:
+                product_set_key = f"{self.PRODUCT_MAP_PREFIX}{chunk.product_id}"
+                pipe.sadd(product_set_key, key)
+                pipe.expire(product_set_key, ttl or self._config.exact_cache_ttl)
+            await pipe.execute()
+        else:
+            await self._client.set(key, data, ex=ttl or self._config.exact_cache_ttl)
+            for chunk in chunks:
+                product_set_key = f"{self.PRODUCT_MAP_PREFIX}{chunk.product_id}"
+                if hasattr(self._client, "sadd"):
+                    await self._client.sadd(product_set_key, key)
 
     async def invalidate_by_product_id(self, product_id: str) -> int:
         product_set_key = f"{self.PRODUCT_MAP_PREFIX}{product_id}"
+        if not hasattr(self._client, "smembers"):
+            return await self.invalidate_all()
+            
         keys = await self._client.smembers(product_set_key)
         if not keys:
             return 0
         
-        pipe = self._client.pipeline()
-        pipe.delete(*keys)
-        pipe.delete(product_set_key)
-        await pipe.execute()
+        if hasattr(self._client, "pipeline"):
+            pipe = self._client.pipeline()
+            pipe.delete(*keys)
+            pipe.delete(product_set_key)
+            await pipe.execute()
+        else:
+            await self._client.delete(*keys)
+            await self._client.delete(product_set_key)
         return len(keys)
 
     async def invalidate_all(self) -> int:
-        keys = [key async for key in self._client.scan_iter(match=f"{self.KEY_PREFIX}*")]
-        maps = [m async for m in self._client.scan_iter(match=f"{self.PRODUCT_MAP_PREFIX}*")]
-        all_keys = keys + maps
-        if all_keys:
-            await self._client.delete(*all_keys)
-        return len(keys)
+        if hasattr(self._client, "scan_iter"):
+            keys = [key async for key in self._client.scan_iter(match=f"{self.KEY_PREFIX}*")]
+            maps = [m async for m in self._client.scan_iter(match=f"{self.PRODUCT_MAP_PREFIX}*")]
+            all_keys = keys + maps
+            if all_keys:
+                await self._client.delete(*all_keys)
+            return len(keys)
+        return 0

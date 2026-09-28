@@ -58,4 +58,4 @@ Evaluated across the 60 ground-truth questions in `data/eval_questions.jsonl`.
 - **GPU Tier**: NVIDIA RTX 4090 / 5060 Class ($0.40 / hour)
 - **Measured Sustained Throughput**: 71.9 tokens/second = 258,840 tokens/hour
 - **Cost Calculation**:
-  $$\text{Cost per 1M Tokens} = \left(\frac{\$0.40}{258,840\text{ tokens}}\right) \times 1,000,000 = \mathbf{\$0.00155\text{ USD}}$$
+  "$$\\text{Cost per 1M Tokens} = \\left(\\frac{\\$0.40}{258,840\\text{ tokens}}\\right) \\times 1,000,000 = \\mathbf{\\$0.00155\\text{ USD}}"$$

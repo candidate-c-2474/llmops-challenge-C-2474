@@ -18,21 +18,26 @@ class CacheInvalidator(CatalogObserver):
     async def on_catalog_update(self, update: CatalogUpdate) -> None:
         if update.event == CatalogEvent.PRODUCT_CREATED:
             return
-        
-        # Use 'event_type' instead of 'event' to avoid structlog argument collision
+
         logger.info("cache.invalidation.start", event_type=update.event.value, products=update.product_ids)
         invalidated_count = 0
         for pid in update.product_ids:
             count_exact = await self._exact.invalidate_by_product_id(pid)
-            count_semantic = await self._semantic.invalidate_by_product_id(pid)
+            count_semantic = 0
+            if hasattr(self._semantic, "invalidate_by_product_id"):
+                count_semantic = await self._semantic.invalidate_by_product_id(pid)
+            elif hasattr(self._semantic, "invalidate_all"):
+                count_semantic = await self._semantic.invalidate_all()
             invalidated_count += (count_exact + count_semantic)
         logger.info("cache.invalidation.completed", total_purged=invalidated_count)
 
 class CatalogEventBus:
     def __init__(self):
-        self._observers = []
+        self._observers: list[CatalogObserver] = []
+
     def subscribe(self, observer: CatalogObserver):
         self._observers.append(observer)
+
     async def publish(self, update: CatalogUpdate):
         for observer in self._observers:
             try:

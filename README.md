@@ -53,3 +53,13 @@ python3 bench/run_benchmarks.py
 2. **Dynamic Semantic Threshold Calibration**: Perform an exhaustive sweep over eval_questions.jsonl to calculate exact false-hit rates for semantic cache thresholds between 0.85 and 0.95.
 3. **Enhanced Prompt Injection Guards**: Add input sanitization classifiers before feeding retrieved catalog text into the agent loop context.
 4. **Automated End-to-End Failover Integration Test**: Expand CI to spin up Docker Compose, simulate vLLM container termination under load, and verify llama.cpp zero-downtime failover automatically.
+
+---
+
+## Architecture and Decisions
+
+- **Architecture Diagrams (Mermaid)**: See `docs/architecture/`
+- **Architecture Decision Records**: See `docs/DECISIONS.md`
+- **Empirical Benchmarks and Cost Math**: See `docs/BENCHMARKS.md`
+- **AI Coding Assistant Disclosure**: See `docs/AI_USAGE.md`
+
