@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
 
-CREATE INDEX IF NOT EXISTS idx_products_embedding ON products USING hnsw (embedding vector_cosine_ops);
+CREATE INDEX IF NOT EXISTS idx_products_embedding ON products USING hnsw(embedding vector_cosine_ops);
 CREATE INDEX IF NOT EXISTS idx_products_search_vector ON products USING gin (search_vector);
 """
 
@@ -58,12 +58,14 @@ BEFORE INSERT OR UPDATE ON products
 FOR EACH ROW EXECUTE FUNCTION products_search_vector_update();
 """
 
+
 def generate_deterministic_embedding(text: str, dim: int = 384) -> list[float]:
     """Generates a deterministic, unit-normalized vector from text (zero network dependencies)."""
     rng = random.Random(text)
     vec = [rng.gauss(0, 1) for _ in range(dim)]
     norm = math.sqrt(sum(x * x for x in vec))
     return [round(x / norm, 6) for x in vec]
+
 
 async def seed():
     print(f"Connecting to database: {DB_URL}")
@@ -73,7 +75,7 @@ async def seed():
         print(f"Database connection error: {e}")
         print("Ensure postgres container is running (docker compose up -d)")
         sys.exit(1)
-    
+
     # 1. Provision schemas & extensions
     print("Provisioning Postgres schema and pgvector extensions...")
     await conn.execute(SCHEMA_SQL)
@@ -94,11 +96,11 @@ async def seed():
     print(f"Found {len(products)} products. Ingesting with 384-dim vector embeddings...")
     for idx, p in enumerate(products):
         dims = p.get("dimensions", {})
-        width = dims.get("width_cm")
-        height = dims.get("height_cm")
-        depth = dims.get("depth_cm")
+        width = dims.get("width_cm", dims.get("width"))
+        height = dims.get("height_cm", dims.get("height"))
+        depth = dims.get("depth_cm", dims.get("depth"))
         weight = dims.get("weight_kg")
-        
+
         text_payload = f"Product: {p['name']}. Category: {p['category']}. Description: {p['description']}"
         vector = generate_deterministic_embedding(text_payload, dim=384)
         vector_str = "[" + ",".join(str(x) for x in vector) + "]"
@@ -121,12 +123,13 @@ async def seed():
                 updated_at = TIMEZONE('utc', NOW())
         """, p["id"], p["name"], p["category"], float(p["price"]), p.get("currency", "USD"), int(p.get("stock", 0)),
              width, height, depth, weight, p.get("description", ""), p.get("tags", []), vector_str)
-        
+
         if (idx + 1) % 500 == 0 or (idx + 1) == len(products):
             print(f"  Ingested {idx + 1}/{len(products)} products...")
 
     print("✅ Catalog successfully seeded, indexed, and vector-embedded!")
     await conn.close()
+
 
 if __name__ == "__main__":
     asyncio.run(seed())
