@@ -1,7 +1,3 @@
-"""
-Observer Pattern: Listens to CatalogEvents and performs surgical, non-destructive cache invalidation.
-Links Redis exact/semantic hashes to specific product IDs.
-"""
 from abc import ABC, abstractmethod
 import structlog
 from rag_core.models import CatalogUpdate, CatalogEvent
@@ -21,26 +17,22 @@ class CacheInvalidator(CatalogObserver):
 
     async def on_catalog_update(self, update: CatalogUpdate) -> None:
         if update.event == CatalogEvent.PRODUCT_CREATED:
-            return  # No stale entries exist for newly created products
-
-        logger.info("cache.invalidation.start", event=update.event.value, products=update.product_ids)
-        invalidated_count = 0
+            return
         
+        # Use 'event_type' instead of 'event' to avoid structlog argument collision
+        logger.info("cache.invalidation.start", event_type=update.event.value, products=update.product_ids)
+        invalidated_count = 0
         for pid in update.product_ids:
-            # Clear associated Redis keys
             count_exact = await self._exact.invalidate_by_product_id(pid)
             count_semantic = await self._semantic.invalidate_by_product_id(pid)
             invalidated_count += (count_exact + count_semantic)
-            
         logger.info("cache.invalidation.completed", total_purged=invalidated_count)
 
 class CatalogEventBus:
     def __init__(self):
-        self._observers: list[CatalogObserver] = []
-
+        self._observers = []
     def subscribe(self, observer: CatalogObserver):
         self._observers.append(observer)
-
     async def publish(self, update: CatalogUpdate):
         for observer in self._observers:
             try:
