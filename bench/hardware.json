@@ -1,0 +1,29 @@
+{
+  "candidate_id": "C-2474",
+  "captured_at": "2026-09-28",
+  "host": {
+    "os": "Ubuntu 22.04 LTS (WSL2)",
+    "kernel": "WSL2",
+    "cpu": "AMD Ryzen 5 5600X (6C/12T)",
+    "ram_gb": 32,
+    "ram_type": "DDR4"
+  },
+  "gpu": {
+    "model": "NVIDIA GeForce RTX 5060",
+    "vram_gb": 8,
+    "vram_type": "GDDR7",
+    "architecture": "Blackwell SM120",
+    "cuda_runtime": "13.4",
+    "driver": "615.78.02"
+  },
+  "runtime": {
+    "primary_backend": "vLLM 0.29.0",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "precision": "bfloat16",
+    "wsl2_workarounds": [
+      "VLLM_USE_V2_MODEL_RUNNER=0 (UVA not available on WSL2)",
+      "VLLM_USE_FLASHINFER_SAMPLER=0 (nvcc not present in container)",
+      "VLLM_WSL2_ENABLE_PIN_MEMORY=1 (pinned memory opt-in on WSL2)"
+    ]
+  }
+}

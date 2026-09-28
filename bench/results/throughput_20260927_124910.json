@@ -1,8 +1,0 @@
-{
-  "metric": "token_throughput",
-  "unit": "tokens_per_second",
-  "mean_tok_sec": 68.4,
-  "p50_tok_sec": 71.0,
-  "samples": 50,
-  "backend": "vLLM AWQ 4-bit (RTX 5060)"
-}

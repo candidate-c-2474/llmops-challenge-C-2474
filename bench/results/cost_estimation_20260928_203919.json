@@ -1,0 +1,9 @@
+{
+  "cloud_provider": "RunPod On-Demand",
+  "gpu_class": "NVIDIA RTX 5060 / 4090 Class",
+  "hourly_rate_usd": 0.4,
+  "measured_throughput_tok_s": 111.2,
+  "tokens_per_hour": 400320,
+  "cost_per_1m_output_tokens_usd": 0.9992,
+  "status": "PROJECTED \u2014 unit economics, not a metered cloud bill"
+}

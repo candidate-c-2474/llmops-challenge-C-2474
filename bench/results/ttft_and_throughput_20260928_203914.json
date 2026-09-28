@@ -1,0 +1,12 @@
+{
+  "backend": "vLLM-GPU (Primary)",
+  "status": "ONLINE",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "samples": 10,
+  "errors": 0,
+  "ttft_p50_ms": 574.68,
+  "ttft_p95_ms": 604.31,
+  "ttft_mean_ms": 575.62,
+  "throughput_mean_tok_s": 111.2,
+  "throughput_p50_tok_s": 111.8
+}

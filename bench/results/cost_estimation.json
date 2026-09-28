@@ -1,9 +1,0 @@
-{
-  "cloud_infrastructure": "RunPod / On-Demand Cloud Instance",
-  "gpu_tier": "NVIDIA RTX 4090 / 5060 Class",
-  "hourly_rate_usd": 0.4,
-  "measured_throughput_tok_s": 71.9,
-  "tokens_per_hour": 258840,
-  "cost_per_1m_output_tokens_usd": 0.00155,
-  "calculation_math": "($0.40 / 258,840 tokens_per_hour) * 1,000,000 = $0.00155 USD"
-}

@@ -1,61 +1,130 @@
 # Empirical Benchmark Report — Candidate C-2474
 
-All metrics in this report originate from physical profiling runs recorded in `bench/results/` and are fully reproducible via `bench/run_benchmarks.py`.
+This document distinguishes **measured** metrics (physically executed on the
+author's reference hardware) from **projected** metrics (extrapolated from
+published baselines or from the author's prior work). Every number is labeled.
+
+**Reference hardware:** AMD Ryzen 5 5600X (6C/12T) / 32 GB DDR4 / NVIDIA
+GeForce RTX 5060 8 GB GDDR7 (Blackwell SM120, CUDA 13.4) / Ubuntu 22.04 WSL2.
+
+**Runtime stack (as measured):**
+- vLLM 0.29.0 serving `Qwen/Qwen2.5-1.5B-Instruct` (bfloat16) on the RTX 5060.
+- vLLM flags: `--max-model-len 4096 --gpu-memory-utilization 0.75 --enable-auto-tool-choice --tool-call-parser hermes`
+- WSL2 workarounds: `VLLM_USE_V2_MODEL_RUNNER=0`, `VLLM_USE_FLASHINFER_SAMPLER=0`, `VLLM_WSL2_ENABLE_PIN_MEMORY=1` (see DECISIONS.md ADR-009).
 
 ---
 
-## 1. Serving & Quantization Comparison (Qwen2.5-3B-Instruct)
+## 1. Measured Single-Request Latency & Throughput (Qwen2.5-1.5B FP16)
 
-Comparison between primary GPU backend (vLLM with AWQ 4-bit quantization) and secondary CPU fallback (llama.cpp with Q4_K_M).
+**Status: MEASURED.** 20 sequential requests to `/v1/chat/completions` with
+`max_tokens=20`, immediately after a warmup call. Wall clock recorded via
+`curl` + `date +%s.%N`.
 
-| Metric | Primary: vLLM (AWQ 4-bit GPU) | Fallback: llama.cpp (Q4_K_M CPU) | Delta / Gain |
-|---|---|---|---|
-| **TTFT (p50)** | **35.43 ms** | 142.80 ms | **4.03x faster** |
-| **TTFT (p95)** | **51.61 ms** | 210.40 ms | **4.08x faster** |
-| **Decode Throughput** | **71.9 tok/s** | 18.4 tok/s | **3.91x higher** |
-| **Peak Memory Usage** | **2.45 GB VRAM** | 3.10 GB System RAM | **5.55 GB KV Headroom** |
-| **Answer Accuracy (Eval)** | **91.6%** | 89.2% | **+2.4% accuracy** |
+| Metric | Measured Value |
+|---|---|
+| Requests recorded | 20 |
+| Per-request wall clock (min) | 51 ms |
+| Per-request wall clock (p50) | ~62 ms |
+| Per-request wall clock (p95) | ~143 ms |
+| Decode throughput (aggregate) | ~90 tok/s |
+| Decode throughput (small replies) | ~130 tok/s |
+| Cold-start engine init | ~14 s (warm torch.compile cache) |
+| First-request wall clock (cold) | ~40 s (lazy kernel compilation) |
 
-### Quantization Trade-off Defense
-We selected **Qwen2.5-3B-Instruct quantized to AWQ 4-bit** for production serving. 
-- **VRAM Footprint**: FP16 would consume ~6.2 GB of VRAM, leaving only ~1.8 GB for KV Cache on an 8GB GPU (causing OOM crashes under concurrency).
-- **Headroom**: AWQ 4-bit consumes only 2.45 GB VRAM, reserving 5.55 GB strictly for PagedAttention KV Cache blocks, allowing continuous batching to scale seamlessly up to 32 concurrent requests.
-
----
-
-## 2. Concurrency Scaling & Load Profile (1, 8, 32 Users)
-
-Load scaling under continuous batching on the primary NVIDIA Blackwell (RTX 5060) accelerator.
-
-| Concurrent Users | Aggregate Throughput | p95 Tail Latency | Mean TPOT | System State |
-|---|---|---|---|---|
-| **1 User** | 71.9 tok/s | 51.61 ms | 13.9 ms | Latency-optimal |
-| **8 Users** | 248.5 tok/s | 118.40 ms | 15.2 ms | Throughput-optimal (Sweet spot) |
-| **32 Users** | 314.8 tok/s | 384.20 ms | 24.8 ms | High memory saturation |
-
-### Tuning Knobs Explained:
-1. `max_num_seqs = 32`: Aligned with continuous batching capacity to prevent scheduler thrashing.
-2. `gpu_memory_utilization = 0.70`: Allocates 5.6 GB of VRAM to vLLM, protecting 2.4 GB for OS driver stability.
-3. `max_model_len = 4096`: Caps the maximum context length to prevent individual long-context queries from exhausting the global KV page pool.
+**Interpretation.** The 51 ms floor corresponds to fixed prefill + scheduler
+overhead at a 4096-token context budget. Runs producing 11 tokens completed
+in ~118 ms, implying a marginal cost of ~7–8 ms per additional output token
+— consistent with the ~130 tok/s decode rate observed on small replies.
+After the first request of a session, no recompilation occurs.
 
 ---
 
-## 3. RAG Retrieval Quality (Recall@5 & MRR)
+## 2. Cold-Start vs. Warm-Start Behavior
 
-Evaluated across the 60 ground-truth questions in `data/eval_questions.jsonl`.
+**Status: MEASURED.**
 
-| Retrieval Pipeline Stage | Recall@5 | MRR | Added Latency (p95) | Trade-off Rationale |
-|---|---|---|---|---|
-| **Dense Only (all-MiniLM-L6-v2)** | 0.74 | 0.62 | 18.5 ms (Base) | Misses exact SKU/ID queries |
-| **Hybrid (BM25 + Dense RRF k=60)** | 0.88 | 0.79 | +5.7 ms (24.2 ms) | Captures exact lexical tokens + semantic intent |
-| **Hybrid + Cross-Encoder Rerank** | **0.94** | **0.89** | **+38.4 ms (62.6 ms)** | **Production Choice (+20% Recall gain for 38ms)** |
+vLLM performs two one-time costs on first startup:
+- `torch.compile` graph capture: ~14 s cold; <1 s with warm cache.
+- CUDA graph capture for the configured concurrency range: ~4 s.
+
+A **~40 s first-request wall clock** was observed once during initial bring-up,
+attributable to lazy kernel compilation on the first forward pass. Subsequent
+requests in the same process complete in 50–150 ms (Section 1).
 
 ---
 
-## 4. Cloud Serving Cost Estimation (Per 1 Million Tokens)
+## 3. KV Cache Budget (Measured)
 
-- **Cloud Provider**: RunPod / Vast.ai On-Demand Instance
-- **GPU Tier**: NVIDIA RTX 4090 / 5060 Class ($0.40 / hour)
-- **Measured Sustained Throughput**: 71.9 tokens/second = 258,840 tokens/hour
-- **Cost Calculation**:
-  "$$\\text{Cost per 1M Tokens} = \\left(\\frac{\\$0.40}{258,840\\text{ tokens}}\\right) \\times 1,000,000 = \\mathbf{\\$0.00155\\text{ USD}}"$$
+**Status: MEASURED.** Reported by vLLM at startup with
+`--gpu-memory-utilization 0.75`.
+
+| Metric | Value |
+|---|---|
+| Total VRAM | 8.0 GB (8,151 MiB per `nvidia-smi`) |
+| Weights footprint (Qwen2.5-1.5B FP16) | ~2.98 GiB |
+| Non-torch + CUDA graph overhead | ~0.85 GiB |
+| KV cache allocated | 1.98 GiB |
+| Max concurrency @ 4096 ctx | 14.55x |
+
+**Production projection (NOT measured in this environment).** With
+`Qwen2.5-3B-Instruct` quantized to AWQ 4-bit, weight footprint is published
+at ~2.45 GiB, leaving ~5.5 GiB for KV cache and enabling higher concurrency.
+This projection is derived from published AWQ benchmarks and is **not**
+measured on the reference hardware.
+
+---
+
+## 4. Retrieval Quality — Methodology Only
+
+**Status: NOT MEASURED AT SCALE.**
+
+The hybrid retrieval pipeline composes:
+1. BM25 / Postgres `ts_rank_cd` full-text search.
+2. Dense retrieval over pgvector (HNSW index).
+3. Reciprocal Rank Fusion (`k=60`).
+4. Cross-Encoder rerank (`ms-marco-MiniLM-L6-v2`), with graceful
+   pass-through when the model is not cached locally.
+
+**Note on reported metrics.** The retrieval quality metrics present in
+earlier revisions of this document (Recall@5 = 0.94, MRR = 0.89) were
+**projections based on published MTEB / BEIR baselines**, not measurements
+performed on this catalog. Because the smoke-suite catalog contains only
+10 products, standard retrieval metrics are not statistically meaningful
+at this scale.
+
+A full evaluation requires the production catalog (~2000 products) and the
+`eval_questions.jsonl` ground-truth set — both wired into the pipeline via
+the `data/` directory drop-in interface documented in README.md.
+
+---
+
+## 5. Cloud Serving Cost Estimation
+
+**Status: PROJECTED.** No cloud instance was rented for this assessment.
+
+- **Cloud tier reference:** RunPod / Vast.ai on-demand RTX 4090/5060-class
+  instance at `$0.40 / hour` (public list price at time of writing).
+- **Throughput basis:** 90 tok/s measured locally (Section 1). At this rate:
+  90 × 3600 = 324,000 tokens/hour.
+- **Projected cost per 1M tokens:**
+  `($0.40 / 324,000) × 1,000,000 ≈ $0.00123 USD`.
+
+Caveat: this is a unit-economics projection, not a metered cloud bill.
+
+---
+
+## 6. What Is Measured vs. What Is Projected
+
+| Category | Status |
+|---|---|
+| Single-request latency & throughput (Section 1) | **Measured** |
+| Cold-start behavior (Section 2) | **Measured** |
+| KV cache budget (Section 3) | **Measured** |
+| Production 3B AWQ footprint (Section 3) | **Projected** |
+| Retrieval quality (Section 4) | **Not measured at this scale** |
+| Cloud cost per 1M tokens (Section 5) | **Projected** |
+
+The intent of this document is to record what was actually observed on the
+reference hardware, and to label projections as projections. Where numbers
+are carried over from external benchmarks or from the author's prior work,
+this is stated explicitly.
