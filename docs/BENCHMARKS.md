@@ -151,3 +151,100 @@ The intent of this document is to record what was actually observed on the
 reference hardware, and to label projections as projections. Where numbers
 are carried over from external benchmarks or from the author's prior work,
 this is stated explicitly.
+
+---
+
+## 7. Semantic Cache Threshold Calibration
+
+**Status: METHODOLOGY DEPLOYED, NUMBERS MEASURED IN OFFLINE MODE.**
+
+`bench/run_semantic_cache_calibration.py` sweeps the semantic cache
+similarity threshold and reports two metrics per threshold:
+
+- **hit_rate on paraphrase pairs** — fraction of controlled paraphrase
+  pairs (e.g., *"standing desk under 500 dollars"* vs *"adjustable desk
+  cheaper than $500"*) that would produce a cache hit.
+- **false_hit_rate on distinct pairs** — fraction of controlled distinct
+  pairs (e.g., *"standing desk under 500 dollars"* vs *"cheapest sofa in
+  stock"*) that would incorrectly produce a cache hit.
+
+The probe set has 10 paraphrase pairs and 10 distinct pairs; each pair is
+scored with the same encoder the pipeline uses at query time.
+
+| Threshold | Hit rate (paraphrases) | False-hit rate (distinct) |
+|---|---|---|
+| 0.70 | 0.000 | 0.000 |
+| 0.75 | 0.000 | 0.000 |
+| 0.80 | 0.000 | 0.000 |
+| 0.85 | 0.000 | 0.000 |
+| 0.88 | 0.000 | 0.000 |
+| 0.90 | 0.000 | 0.000 |
+| 0.92 (current default) | 0.000 | 0.000 |
+| 0.94 | 0.000 | 0.000 |
+| 0.95 | 0.000 | 0.000 |
+
+**Why every cell is 0.000.** The semantic encoder
+(`sentence-transformers/all-MiniLM-L6-v2`) is not cached in this offline
+environment (see ADR-012). The calibration runs with the deterministic
+hash fallback used by `DenseRetriever` and `SemanticCache` — the
+similarity scores of hash embeddings are noise, in the range
+`[-0.06, 0.12]` for both paraphrase and distinct pairs. No pair reaches
+any of the swept thresholds.
+
+**What this measurement delivers.** The deliverable is the **method**:
+a reproducible script with a controlled probe set, a sweep across
+thresholds, and two named metrics. On a networked deployment with the
+semantic embedder cached, the same script yields the real curve, and the
+threshold can be set from data rather than guessed.
+
+**Current threshold in the running system:** `0.92`, read from
+`RedisConfig.semantic_similarity_threshold`, which is overridable via the
+environment variable `REDIS_SEMANTIC_SIMILARITY_THRESHOLD`. On a
+production deployment, the recommended threshold is the lowest value that
+keeps `false_hit_rate = 0` while maximizing
+`hit_rate_on_paraphrases` — which the script computes and prints in its
+final line.
+
+---
+
+## 8. Load Test — Concurrency 1, 8, 32
+
+**Status: MEASURED.** `bench/run_load_test.py` runs 5 rounds at each
+concurrency level, 32 output tokens per request, 2s cooldown between
+rounds and 5s between levels. Aggregate throughput per round =
+total output tokens / round wall-clock.
+
+| Concurrency | Aggregate throughput (tok/s) | p50 latency (ms) | p95 latency (ms) | Errors |
+|---|---|---|---|---|
+| 1  | 81.36   | 274.75 | 274.75 | 0 |
+| 8  | 467.37  | 286.59 | 358.35 | 0 |
+| 32 | 1432.43 | 339.74 | 451.85 | 0 |
+
+**Interpretation:**
+
+- **1 → 8 concurrent:** throughput **5.7×** while p95 latency grows only
+  **+30%**. Continuous batching is doing exactly what it should —
+  amortizing prefill + scheduler overhead across concurrent requests.
+- **8 → 32 concurrent:** throughput **3.1×**, p95 latency +26%. The
+  scaling curve is now sublinear: the KV cache is being divided 32 ways
+  inside the same 1.98 GiB budget, and scheduler queueing begins to
+  matter.
+- **Zero errors at every level.** The circuit breaker stayed CLOSED
+  throughout (`GET /health` shows `failure_count = 0`).
+
+**Tuning knobs on the running vLLM (documented, not swept):**
+
+| Knob | Value in this run | What it does |
+|---|---|---|
+| `--max-model-len` | 4096 | Caps total context; bounds the KV cache block size per request. |
+| `--gpu-memory-utilization` | 0.75 | Reserves 5.95 GiB of the 7.93 GiB VRAM. The remaining ~2 GiB goes to weights + CUDA graph buffers. |
+| `--max-num-seqs` | default (256) | Upper bound on concurrent sequences per step. Not hit at 32 concurrent. |
+| `--enable-prefix-caching` | default off | Would help when concurrent queries share a system prompt. Not enabled in this run. |
+| `--enable-chunked-prefill` | default on | Splits long prefills across scheduler steps so short requests are not starved. |
+
+**Why the previous revision of this section was disabled.** The original
+`measure_load_concurrency()` measured a single `asyncio.gather` batch and
+reported 32-user throughput *higher* than 1-user throughput *while* p95
+*lower* than 8-user. That is physically impossible; the bug was per-round
+timing conflated with per-request latency. The new script times every
+request individually, aggregates per round, and averages across rounds.

@@ -1,0 +1,91 @@
+{
+  "timestamp": "2026-09-29T01:24:15.578784",
+  "embedding_mode": "hash-fallback",
+  "note": "Semantic embedder is not available offline. The measured distances reflect the hash fallback used by DenseRetriever and SemanticCache in this environment. The calibration methodology is what matters: a production deployment with the semantic embedder would re-run this same sweep to pick a threshold from data.",
+  "n_paraphrase_pairs": 10,
+  "n_distinct_pairs": 10,
+  "sweep": [
+    {
+      "threshold": 0.7,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.75,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.8,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.85,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.88,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.9,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.92,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.94,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    },
+    {
+      "threshold": 0.95,
+      "hit_rate_on_paraphrases": 0.0,
+      "false_hit_rate": 0.0,
+      "true_positives": 0,
+      "false_positives": 0,
+      "n_paraphrase_pairs": 10,
+      "n_distinct_pairs": 10
+    }
+  ],
+  "recommended_threshold": 0.7
+}
