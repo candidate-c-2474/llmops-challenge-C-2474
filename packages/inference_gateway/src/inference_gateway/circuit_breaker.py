@@ -33,3 +33,13 @@ class CircuitBreaker:
         self.last_failure_time = time.time()
         if self.failure_count >= self.failure_threshold:
             self.state = CircuitState.OPEN
+
+    def snapshot(self) -> dict:
+        """Read-only view of breaker state for /health and observability."""
+        return {
+            "state": self.state.value,
+            "failure_count": self.failure_count,
+            "failure_threshold": self.failure_threshold,
+            "recovery_timeout_s": self.recovery_timeout,
+            "last_failure_time": self.last_failure_time or None,
+        }

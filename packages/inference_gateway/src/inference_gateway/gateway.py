@@ -8,6 +8,19 @@ class InferenceGateway:
         self.fallback = fallback
         self.cb = CircuitBreaker()
 
+    @property
+    def circuit_breaker(self) -> CircuitBreaker:
+        """Public accessor for observability (see /health)."""
+        return self.cb
+
+    @property
+    def primary_backend(self):
+        return self.primary
+
+    @property
+    def fallback_backend(self):
+        return self.fallback
+
     async def generate(self, request: InferenceRequest) -> InferenceResponse:
         if self.cb.allow_request():
             try:

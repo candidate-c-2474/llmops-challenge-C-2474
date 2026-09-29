@@ -141,6 +141,7 @@ async def startup_event():
     gateway = InferenceGateway(primary=primary, fallback=fallback)
     agent = AgentLoop(backend=GatewayAgentAdapter(gateway), tool_registry=registry, config=config.agent)
 
+    app.state.gateway = gateway
     app.state.agent = agent
     logger.info("api.startup", status="fully_initialized_production")
 
