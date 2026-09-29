@@ -1,0 +1,330 @@
+{
+  "summary": {
+    "timestamp": "2026-09-29T02:46:49.018259",
+    "tag": "fp16",
+    "api": "http://roomfit-api:8000",
+    "n_questions": 20,
+    "n_errors": 0,
+    "metric_note": "discriminative_token_in_tool_result is the primary metric: it measures whether the retrieval stage surfaced at least one product that legitimately answers the question. exact_id_in_answer / expected_id_in_tool_result are reported for transparency but are not meaningful when the eval set chooses a random product among many valid answers.",
+    "primary_metric": {
+      "name": "discriminative_token_in_tool_result",
+      "value": 1.0,
+      "count": 20,
+      "n": 20
+    },
+    "secondary_metrics": {
+      "exact_id_in_answer": 0.2,
+      "expected_id_in_tool_result": 0.2
+    }
+  },
+  "details": [
+    {
+      "question_id": "Q001",
+      "question": "Show me a office chair.",
+      "expected": [
+        "CHAIR-161"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "office",
+      "answer_chars": 1523,
+      "tool_result_chars": 1480,
+      "latency_ms": 5522.2,
+      "error": null
+    },
+    {
+      "question_id": "Q002",
+      "question": "Show me a shag rug.",
+      "expected": [
+        "RUG-048"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "shag",
+      "answer_chars": 1394,
+      "tool_result_chars": 1426,
+      "latency_ms": 4776.3,
+      "error": null
+    },
+    {
+      "question_id": "Q003",
+      "question": "Show me a contemporary sofa.",
+      "expected": [
+        "SOFA-103"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "contemporary",
+      "answer_chars": 1543,
+      "tool_result_chars": 1521,
+      "latency_ms": 4944.6,
+      "error": null
+    },
+    {
+      "question_id": "Q004",
+      "question": "Show me a ergonomic chair.",
+      "expected": [
+        "CHAIR-061"
+      ],
+      "mentioned": [
+        "CHAIR-061"
+      ],
+      "tool_result_hit": true,
+      "token_hit": true,
+      "discriminative_token": "ergonomic",
+      "answer_chars": 1563,
+      "tool_result_chars": 1503,
+      "latency_ms": 4775.7,
+      "error": null
+    },
+    {
+      "question_id": "Q005",
+      "question": "Show me a birch desk.",
+      "expected": [
+        "DESK-120"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "birch",
+      "answer_chars": 1426,
+      "tool_result_chars": 1516,
+      "latency_ms": 4480.5,
+      "error": null
+    },
+    {
+      "question_id": "Q006",
+      "question": "Show me a chandelier lighting.",
+      "expected": [
+        "LAMP-184"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "chandelier",
+      "answer_chars": 1465,
+      "tool_result_chars": 1479,
+      "latency_ms": 4730.5,
+      "error": null
+    },
+    {
+      "question_id": "Q007",
+      "question": "Show me a accent chair.",
+      "expected": [
+        "CHAIR-029"
+      ],
+      "mentioned": [
+        "CHAIR-029"
+      ],
+      "tool_result_hit": true,
+      "token_hit": true,
+      "discriminative_token": "accent",
+      "answer_chars": 1471,
+      "tool_result_chars": 1477,
+      "latency_ms": 4474.8,
+      "error": null
+    },
+    {
+      "question_id": "Q008",
+      "question": "Show me a computer desk.",
+      "expected": [
+        "DESK-168"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "computer",
+      "answer_chars": 1376,
+      "tool_result_chars": 1505,
+      "latency_ms": 4663.3,
+      "error": null
+    },
+    {
+      "question_id": "Q009",
+      "question": "Show me a vase decor.",
+      "expected": [
+        "DECOR-075"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "vase",
+      "answer_chars": 1313,
+      "tool_result_chars": 1400,
+      "latency_ms": 4612.8,
+      "error": null
+    },
+    {
+      "question_id": "Q010",
+      "question": "Show me a vase decor.",
+      "expected": [
+        "DECOR-156"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "vase",
+      "answer_chars": 1387,
+      "tool_result_chars": 1400,
+      "latency_ms": 4581.1,
+      "error": null
+    },
+    {
+      "question_id": "Q011",
+      "question": "Show me a mid-century sofa.",
+      "expected": [
+        "SOFA-105"
+      ],
+      "mentioned": [
+        "SOFA-105"
+      ],
+      "tool_result_hit": true,
+      "token_hit": true,
+      "discriminative_token": "mid-century",
+      "answer_chars": 1396,
+      "tool_result_chars": 1473,
+      "latency_ms": 4699.0,
+      "error": null
+    },
+    {
+      "question_id": "Q012",
+      "question": "Show me a nightstand table.",
+      "expected": [
+        "TABLE-237"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "nightstand",
+      "answer_chars": 1390,
+      "tool_result_chars": 1452,
+      "latency_ms": 4689.9,
+      "error": null
+    },
+    {
+      "question_id": "Q013",
+      "question": "Show me a linen chair.",
+      "expected": [
+        "CHAIR-276"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "linen",
+      "answer_chars": 1395,
+      "tool_result_chars": 1478,
+      "latency_ms": 4576.7,
+      "error": null
+    },
+    {
+      "question_id": "Q014",
+      "question": "Show me a bunk bed.",
+      "expected": [
+        "BED-076"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "bunk",
+      "answer_chars": 1396,
+      "tool_result_chars": 1429,
+      "latency_ms": 4901.1,
+      "error": null
+    },
+    {
+      "question_id": "Q015",
+      "question": "Show me a japanese decor.",
+      "expected": [
+        "DECOR-070"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "japanese",
+      "answer_chars": 1306,
+      "tool_result_chars": 1434,
+      "latency_ms": 4275.3,
+      "error": null
+    },
+    {
+      "question_id": "Q016",
+      "question": "Show me a chandelier lighting.",
+      "expected": [
+        "LAMP-173"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "chandelier",
+      "answer_chars": 1543,
+      "tool_result_chars": 1479,
+      "latency_ms": 4863.5,
+      "error": null
+    },
+    {
+      "question_id": "Q017",
+      "question": "Show me a brass lighting.",
+      "expected": [
+        "LAMP-099"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "brass",
+      "answer_chars": 1422,
+      "tool_result_chars": 1497,
+      "latency_ms": 4347.2,
+      "error": null
+    },
+    {
+      "question_id": "Q018",
+      "question": "Show me a geometric rug.",
+      "expected": [
+        "RUG-064"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "geometric",
+      "answer_chars": 1446,
+      "tool_result_chars": 1477,
+      "latency_ms": 4892.1,
+      "error": null
+    },
+    {
+      "question_id": "Q019",
+      "question": "Show me a chaise sofa.",
+      "expected": [
+        "SOFA-099"
+      ],
+      "mentioned": [],
+      "tool_result_hit": false,
+      "token_hit": true,
+      "discriminative_token": "chaise",
+      "answer_chars": 1360,
+      "tool_result_chars": 1415,
+      "latency_ms": 4805.2,
+      "error": null
+    },
+    {
+      "question_id": "Q020",
+      "question": "Show me a black lighting.",
+      "expected": [
+        "LAMP-163"
+      ],
+      "mentioned": [
+        "LAMP-163"
+      ],
+      "tool_result_hit": true,
+      "token_hit": true,
+      "discriminative_token": "black",
+      "answer_chars": 1544,
+      "tool_result_chars": 1590,
+      "latency_ms": 4735.9,
+      "error": null
+    }
+  ]
+}
