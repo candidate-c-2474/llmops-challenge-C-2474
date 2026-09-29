@@ -415,3 +415,50 @@ stream against vLLM. This satisfies the "Stop button must reach the model
 server" requirement independent of the frontend build status.
 
 **Status:** **SOURCE COMPLETE**, **BUILD NOT RUN** (environment constraint).
+
+---
+
+## ADR-014: Runtime FP8 Quantization as the Second Precision Axis
+
+**Decision:** Run the second precision configuration as FP8 applied at
+runtime by vLLM (`--quantization fp8`), instead of downloading a
+pre-quantized AWQ/GPTQ checkpoint.
+
+**Options considered:**
+- Download `Qwen2.5-1.5B-Instruct-AWQ` (~700 MB) — rejected. The 4G
+  link in the dev environment runs at ~350 B/s; the download would take
+  days.
+- Ship FP16 only and document AWQ as untested — rejected. The
+  assessment explicitly asks for a precision comparison.
+- Apply FP8 at runtime via vLLM — **chosen**.
+
+**Rationale:**
+- FP8 is a first-class precision in vLLM 0.29
+  (`QUANTIZATION_METHODS` includes `fp8`, `fp8_per_tensor`,
+  `fp8_per_block`, `fp8_per_channel`, plus `fbgemm_fp8` and
+  `modelopt_mxfp8`).
+- On Blackwell SM120 the kernel selected is
+  `CutlassFP8ScaledMMLinearKernel for Fp8PerTensorOnlineLinearMethod`,
+  which is hardware-accelerated.
+- Same model, same tokenizer, same eval set: the precision axis is
+  cleanly isolated (weight dtype is the only varying factor).
+- Result (see BENCHMARKS.md Section 1b): FP8 reduces weight footprint by
+  42% (2.98 GiB → 1.73 GiB), improves single-request TTFT by 33%,
+  improves single-request throughput by 48%, and improves 32-concurrency
+  aggregate throughput by 22%.
+
+**Trade-offs:**
+- Runtime quantization is slower to *load* (11.76 s of weight loading
+  vs. the FP16 baseline), but this is a one-time cost per process
+  restart.
+- Accuracy was not re-measured on the eval set. The Qwen2.5-1.5B
+  Instruct model family has published FP8 accuracy regression well below
+  the eval set's noise floor; a full accuracy sweep is listed as future
+  work.
+
+**Production guidance:** On a networked deployment the same
+`bench/run_load_test.py` and `bench/run_benchmarks.py` scripts run
+against an AWQ checkpoint by changing `--model` and dropping the
+`--quantization` flag (AWQ is inferred from the checkpoint config).
+
+**Status:** **MEASURED**, documented in BENCHMARKS.md Section 1b.

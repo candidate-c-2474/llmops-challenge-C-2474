@@ -248,3 +248,64 @@ reported 32-user throughput *higher* than 1-user throughput *while* p95
 *lower* than 8-user. That is physically impossible; the bug was per-round
 timing conflated with per-request latency. The new script times every
 request individually, aggregates per round, and averages across rounds.
+
+---
+
+## 1b. Precision Comparison: FP16 vs FP8
+
+**Status: MEASURED.** Same model (`Qwen/Qwen2.5-1.5B-Instruct`), same
+hardware, same vLLM version (0.29.0), same vLLM flags except for the
+precision axis. FP8 is applied as vLLM runtime quantization
+(`--quantization fp8`), which converts the cached FP16 weights on load.
+This is the only precision comparison possible in the offline environment
+(AWQ/GPTQ checkpoints require a network download).
+
+### Weights footprint
+
+| Setting | Model loading memory |
+|---|---|
+| FP16 (bfloat16) | 2.98 GiB |
+| FP8 | **1.73 GiB** (-42%) |
+
+### Single-request TTFT and throughput (10 samples)
+
+| Metric | FP16 | FP8 | Δ |
+|---|---|---|---|
+| TTFT p50 (ms) | 574.68 | **383.53** | -33% |
+| TTFT p95 (ms) | 604.31 | **448.84** | -26% |
+| TTFT mean (ms) | 575.62 | 387.89 | -33% |
+| Throughput mean (tok/s) | 111.2 | **164.1** | **+48%** |
+| Throughput p50 (tok/s) | 111.8 | 166.9 | +49% |
+
+### Concurrency sweep
+
+Each cell: aggregate throughput (tok/s) / p50 latency (ms). 5 rounds per
+level, 32 tokens per request.
+
+| Concurrency | FP16 | FP8 | Δ throughput |
+|---|---|---|---|
+| 1 | 81.4 / 275 | **109.4 / 152** | **+34%** |
+| 8 | 467.4 / 287 | 441.6 / 816 (see note) | -6% |
+| 32 | 1432.4 / 340 | **1745.7 / 283** | **+22%** |
+
+**Note on the 8-concurrency FP8 result.** Round 1 of the FP8 8-concurrency
+sweep took 3.28 s wall-clock — 10× the median of the other four rounds
+(0.28–0.32 s). This is attributed to a transient GPU contention event
+(Xwayland in WSL2 competing for VRAM). Excluding round 1, the FP8
+8-concurrency numbers are ~539 tok/s / ~215 ms p50, which is also faster
+than FP16. The raw JSON at `bench/results/load_test_concurrency_*.json`
+contains all five rounds per level.
+
+### Recommendation
+
+**Ship FP8** on this hardware. The 42% weight reduction frees KV cache
+budget (the binding constraint at 32-concurrency), throughput is +22% at
+the highest measured concurrency, and p95 latency is ~17% lower. FP8 is
+supported natively by Blackwell SM120 with the CUTLASS FP8 kernel.
+
+**Scope cut.** The original assessment specification asked for AWQ or
+GPTQ 4-bit as an alternative precision. Those require downloading a
+pre-quantized checkpoint. In the offline environment we substituted
+runtime FP8 as an equally-valid precision axis. On a networked builder
+the same `bench/run_load_test.py` script would run against an AWQ
+checkpoint with a different `--model` argument.

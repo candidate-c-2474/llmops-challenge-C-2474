@@ -1,0 +1,7 @@
+{
+  "backend": "vLLM-GPU (Primary)",
+  "status": "OFFLINE_OR_UNAVAILABLE",
+  "samples_attempted": 10,
+  "errors": 10,
+  "note": "Could not connect to http://localhost:8001. Ensure service is running."
+}

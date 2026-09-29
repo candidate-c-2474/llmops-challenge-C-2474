@@ -17,7 +17,7 @@ from pathlib import Path
 from datetime import datetime
 
 API_URL = "http://localhost:8000"
-VLLM_URL = "http://localhost:8001"
+VLLM_URL = "http://172.25.12.152:8001"  # WSL2 host IP; must be reachable from inside containers
 LLAMACPP_URL = "http://localhost:8080"
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 RESULTS_DIR = Path(__file__).parent / "results"
