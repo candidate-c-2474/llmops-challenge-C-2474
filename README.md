@@ -8,6 +8,26 @@ See `docs/evidence/chat_sse_success.txt` for a captured SSE session.
 
 ---
 
+## 0. Measured results at a glance
+
+All numbers below come from scripts under `bench/` and are reproducible
+against the running stack. Full methodology and per-config breakdown in
+`docs/BENCHMARKS.md`.
+
+| Surface | Metric | Value |
+|---|---|---|
+| Retrieval (hybrid BM25 + RRF) | Recall@5 / MRR (20 retrieval questions) | **1.00 / 1.00** |
+| Retrieval (dense-only, hash fallback) | Recall@5 / MRR | 0.10 / 0.10 |
+| Inference (FP16, 1 user) | TTFT p50 / throughput | 574 ms / 111 tok/s |
+| Inference (FP8, 1 user) | TTFT p50 / throughput | **384 ms / 164 tok/s** |
+| Load test (FP8, 32 concurrent) | aggregate throughput / p95 | **1746 tok/s / 349 ms** |
+| Weights footprint | FP16 → FP8 | 2.98 GiB → **1.73 GiB** (-42%) |
+| Cost (projected) | per 1M output tokens, on-demand RTX 5060 class | ~$0.33 |
+
+Model: `Qwen/Qwen2.5-1.5B-Instruct`. Hardware: RTX 5060 8GB (Blackwell
+SM120) + Ryzen 5 5600X, WSL2. The FP8 row is measured with vLLM runtime
+quantization (see ADR-014).
+
 ## 1. How to run it
 
 ### Prerequisites
