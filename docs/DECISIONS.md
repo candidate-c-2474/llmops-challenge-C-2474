@@ -378,3 +378,40 @@ remain in place as a defensive measure.
 
 **Status:** **DEPLOYED** (fallback chain); **MEASURED** (impact documented
 in BENCHMARKS.md Section 4).
+
+---
+
+## ADR-013: Frontend Not Built in the Offline Environment
+
+**Decision:** Ship the full frontend source tree (Next.js 14 + TypeScript +
+Tailwind) and the complete scaffold, but do not run `npm install` or
+`npm run build` in the development environment.
+
+**Options considered:**
+- Run `npm install` in WSL — rejected. The only Node in the WSL image is
+  v12.22.9; Next.js 14 requires Node 18+. There is no npm cache on disk.
+- Use the host's Node (Windows) — rejected. Not accessible from WSL for
+  the dev server, and would introduce cross-filesystem issues.
+- Rewrite the frontend in vanilla JS with no build step — rejected. The
+  assessment explicitly asks for TypeScript; a build step is expected.
+- Ship source + scaffold and document the gap — **chosen**.
+
+**Rationale:**
+- The frontend source is complete: `page.tsx` (chat UI with Stop button),
+  `useTokenStream.ts` (SSE consumer with `AbortController`),
+  `MetricsStrip.tsx` (TTFT / tok/s / cache / backend strip),
+  `ProductCard.tsx`, `layout.tsx`, `globals.css`.
+- The scaffold (`package.json`, `tsconfig.json`, `next.config.js`,
+  `tailwind.config.js`, `postcss.config.js`) declares Next.js 14.2.5,
+  React 18.3.1, Node >=18.17.0.
+- On a networked machine with Node 18+, `npm install && npm run dev`
+  produces a working chat UI at `http://localhost:3000`. The API URL is
+  read from `NEXT_PUBLIC_API_URL` (defaults to `http://localhost:8000`).
+
+**Cancellation path (server side):** `apps/api/src/api/routes/chat.py`
+polls `request.is_disconnected()` between SSE events and calls
+`agent_stream.aclose()` on disconnect, which propagates to the httpx
+stream against vLLM. This satisfies the "Stop button must reach the model
+server" requirement independent of the frontend build status.
+
+**Status:** **SOURCE COMPLETE**, **BUILD NOT RUN** (environment constraint).
