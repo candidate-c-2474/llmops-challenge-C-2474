@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Helvetica, Arial, sans-serif" font-size="12">
+  <style>
+    .title{font-weight:bold;font-size:16px}
+    .cls{fill:#f5f5f5;stroke:#333;stroke-width:1.5}
+    .iface{fill:#e8f5e9;stroke:#2e7d32}
+    .adapter{fill:#e3f2fd;stroke:#1565c0}
+    .decorator{fill:#fff3e0;stroke:#e65100}
+    .cb{fill:#fce4ec;stroke:#c2185b}
+    .label{fill:#111}
+    .stereo{fill:#555;font-style:italic;font-size:11px}
+    .arrow{stroke:#333;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+    .dashed{stroke:#666;stroke-width:1.2;fill:none;stroke-dasharray:5,4;marker-end:url(#arrT)}
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="arrT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="28" text-anchor="middle" class="title">Inference Gateway — Class Diagram</text>
+
+  <!-- Interface InferenceBackend -->
+  <rect x="380" y="60" width="240" height="100" rx="4" class="cls iface"/>
+  <text x="500" y="80" text-anchor="middle" class="stereo">&lt;&lt;interface&gt;&gt; Strategy</text>
+  <text x="500" y="98" text-anchor="middle" class="label" font-weight="bold">InferenceBackend</text>
+  <line x1="380" y1="105" x2="620" y2="105" stroke="#333"/>
+  <text x="392" y="122" class="label">+ name: str</text>
+  <text x="392" y="138" class="label">+ generate(request)</text>
+  <text x="392" y="154" class="label">+ generate_stream(request)</text>
+
+  <!-- Adapters -->
+  <rect x="60" y="240" width="180" height="80" rx="4" class="cls adapter"/>
+  <text x="150" y="258" text-anchor="middle" class="stereo">&lt;&lt;Adapter&gt;&gt;</text>
+  <text x="150" y="276" text-anchor="middle" class="label" font-weight="bold">VLLMBackend</text>
+  <text x="72" y="298" class="label">+ base_url: str</text>
+  <text x="72" y="314" class="label">+ generate()</text>
+
+  <rect x="260" y="240" width="180" height="80" rx="4" class="cls adapter"/>
+  <text x="350" y="258" text-anchor="middle" class="stereo">&lt;&lt;Adapter&gt;&gt;</text>
+  <text x="350" y="276" text-anchor="middle" class="label" font-weight="bold">LlamaCppBackend</text>
+  <text x="272" y="298" class="label">+ base_url: str</text>
+  <text x="272" y="314" class="label">+ generate()</text>
+
+  <rect x="460" y="240" width="180" height="80" rx="4" class="cls adapter"/>
+  <text x="550" y="258" text-anchor="middle" class="stereo">&lt;&lt;Adapter test double&gt;&gt;</text>
+  <text x="550" y="276" text-anchor="middle" class="label" font-weight="bold">FakeBackend</text>
+  <text x="472" y="298" class="label">+ generate()</text>
+
+  <!-- Decorators -->
+  <rect x="660" y="240" width="180" height="80" rx="4" class="cls decorator"/>
+  <text x="750" y="258" text-anchor="middle" class="stereo">&lt;&lt;Decorator&gt;&gt;</text>
+  <text x="750" y="276" text-anchor="middle" class="label" font-weight="bold">MetricsBackend</text>
+  <text x="672" y="298" class="label">- backend</text>
+  <text x="672" y="314" class="label">+ latency_samples: list</text>
+
+  <rect x="860" y="240" width="130" height="80" rx="4" class="cls decorator"/>
+  <text x="925" y="258" text-anchor="middle" class="stereo">&lt;&lt;Decorator&gt;&gt;</text>
+  <text x="925" y="276" text-anchor="middle" class="label" font-weight="bold">RetryBackend</text>
+  <text x="872" y="298" class="label">- backend</text>
+  <text x="872" y="314" class="label">- max_retries</text>
+
+  <!-- CircuitBreaker -->
+  <rect x="60" y="400" width="220" height="110" rx="4" class="cls cb"/>
+  <text x="170" y="418" text-anchor="middle" class="stereo">&lt;&lt;Circuit Breaker&gt;&gt;</text>
+  <text x="170" y="436" text-anchor="middle" class="label" font-weight="bold">CircuitBreaker</text>
+  <line x1="60" y1="444" x2="280" y2="444" stroke="#333"/>
+  <text x="72" y="462" class="label">+ state: CLOSED|OPEN|HALF_OPEN</text>
+  <text x="72" y="478" class="label">+ allow_request()</text>
+  <text x="72" y="494" class="label">+ record_success() / record_failure()</text>
+
+  <!-- Gateway -->
+  <rect x="380" y="400" width="280" height="110" rx="4" class="cls"/>
+  <text x="520" y="418" text-anchor="middle" class="label" font-weight="bold">InferenceGateway</text>
+  <line x1="380" y1="426" x2="660" y2="426" stroke="#333"/>
+  <text x="392" y="444" class="label">- primary: InferenceBackend</text>
+  <text x="392" y="460" class="label">- fallback: InferenceBackend</text>
+  <text x="392" y="476" class="label">- cb: CircuitBreaker</text>
+  <text x="392" y="492" class="label">+ generate() / generate_stream()</text>
+
+  <!-- Inheritance arrows -->
+  <path class="dashed" d="M 150 240 L 430 160"/>
+  <path class="dashed" d="M 350 240 L 460 160"/>
+  <path class="dashed" d="M 550 240 L 540 160"/>
+  <path class="dashed" d="M 750 240 L 580 160"/>
+  <path class="dashed" d="M 925 240 L 600 160"/>
+
+  <!-- Composition -->
+  <path class="arrow" d="M 750 320 L 700 240"/>
+  <path class="arrow" d="M 925 320 L 900 240"/>
+  <path class="arrow" d="M 520 400 L 520 320"/>
+  <path class="arrow" d="M 440 400 L 200 400"/>
+</svg>

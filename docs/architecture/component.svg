@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <style>
+    .title{font-weight:bold;font-size:16px}
+    .box{fill:#f5f5f5;stroke:#333;stroke-width:1.5}
+    .box-client{fill:#e3f2fd;stroke:#1565c0}
+    .box-api{fill:#fff3e0;stroke:#e65100}
+    .box-pkg{fill:#e8f5e9;stroke:#2e7d32}
+    .box-data{fill:#f3e5f5;stroke:#6a1b9a}
+    .box-models{fill:#fce4ec;stroke:#c2185b}
+    .label{fill:#111}
+    .arrow{stroke:#333;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+    .subgraph-label{font-weight:bold;font-size:12px;fill:#555}
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="30" text-anchor="middle" class="title">RoomFit Copilot — Component Architecture</text>
+
+  <!-- Client -->
+  <rect x="40" y="60" width="220" height="100" rx="6" class="box box-client"/>
+  <text x="50" y="80" class="subgraph-label">Client</text>
+  <rect x="60" y="90" width="180" height="28" rx="4" class="box box-client"/>
+  <text x="150" y="108" text-anchor="middle" class="label">apps/web (Next.js)</text>
+  <rect x="60" y="124" width="180" height="28" rx="4" class="box box-client"/>
+  <text x="150" y="142" text-anchor="middle" class="label">useTokenStream hook</text>
+
+  <!-- API -->
+  <rect x="320" y="60" width="260" height="200" rx="6" class="box box-api"/>
+  <text x="330" y="80" class="subgraph-label">apps/api (FastAPI)</text>
+  <rect x="340" y="90" width="220" height="24" rx="4" class="box box-api"/>
+  <text x="450" y="106" text-anchor="middle" class="label">POST /chat (SSE)</text>
+  <rect x="340" y="118" width="220" height="24" rx="4" class="box box-api"/>
+  <text x="450" y="134" text-anchor="middle" class="label">GET /health</text>
+  <rect x="340" y="146" width="220" height="24" rx="4" class="box box-api"/>
+  <text x="450" y="162" text-anchor="middle" class="label">POST /admin/catalog/apply-updates</text>
+  <rect x="340" y="174" width="220" height="24" rx="4" class="box box-api"/>
+  <text x="450" y="190" text-anchor="middle" class="label">Rate limit + token budget</text>
+  <rect x="340" y="202" width="220" height="24" rx="4" class="box box-api"/>
+  <text x="450" y="218" text-anchor="middle" class="label">Structured logs (request_id)</text>
+
+  <!-- Packages -->
+  <rect x="40" y="320" width="230" height="120" rx="6" class="box box-pkg"/>
+  <text x="50" y="340" class="subgraph-label">Reusable Packages</text>
+  <rect x="60" y="350" width="190" height="34" rx="4" class="box box-pkg"/>
+  <text x="155" y="371" text-anchor="middle" class="label">packages/inference_gateway</text>
+  <rect x="60" y="392" width="190" height="34" rx="4" class="box box-pkg"/>
+  <text x="155" y="413" text-anchor="middle" class="label">packages/rag_core</text>
+
+  <!-- Data -->
+  <rect x="330" y="320" width="230" height="120" rx="6" class="box box-data"/>
+  <text x="340" y="340" class="subgraph-label">Data</text>
+  <ellipse cx="445" cy="375" rx="90" ry="20" class="box box-data"/>
+  <text x="445" y="380" text-anchor="middle" class="label">Postgres 16 + pgvector</text>
+  <ellipse cx="445" cy="415" rx="90" ry="20" class="box box-data"/>
+  <text x="445" y="420" text-anchor="middle" class="label">Redis exact + semantic</text>
+
+  <!-- Models -->
+  <rect x="620" y="320" width="230" height="120" rx="6" class="box box-models"/>
+  <text x="630" y="340" class="subgraph-label">Models</text>
+  <rect x="640" y="350" width="190" height="34" rx="4" class="box box-models"/>
+  <text x="735" y="371" text-anchor="middle" class="label">vLLM GPU (primary)</text>
+  <rect x="640" y="392" width="190" height="34" rx="4" class="box box-models"/>
+  <text x="735" y="413" text-anchor="middle" class="label">llama.cpp CPU (fallback)</text>
+
+  <!-- Arrows: Web -> API -->
+  <path class="arrow" d="M 260 105 L 340 105"/>
+  <!-- API -> Packages -->
+  <path class="arrow" d="M 450 260 L 200 350"/>
+  <!-- API -> Data -->
+  <path class="arrow" d="M 450 260 L 445 355"/>
+  <!-- Packages -> Data -->
+  <path class="arrow" d="M 250 390 L 355 390"/>
+  <!-- Packages -> Models -->
+  <path class="arrow" d="M 250 390 C 500 450 600 400 640 375"/>
+  <!-- API -> Models (gateway) -->
+  <path class="arrow" d="M 580 200 C 700 220 740 300 740 350"/>
+
+  <text x="450" y="490" text-anchor="middle" font-size="12" fill="#555">
+    Reusability boundary: packages/* have independent pyproject.toml and zero imports from apps/*.
+  </text>
+</svg>

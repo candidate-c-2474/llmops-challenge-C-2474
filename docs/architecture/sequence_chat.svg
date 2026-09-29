@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Helvetica, Arial, sans-serif" font-size="11">
+  <style>
+    .title{font-weight:bold;font-size:16px}
+    .actor{fill:#e3f2fd;stroke:#1565c0;stroke-width:1.5}
+    .part{fill:#f5f5f5;stroke:#333;stroke-width:1.5}
+    .label{fill:#111}
+    .lifeline{stroke:#888;stroke-width:1;stroke-dasharray:4,4}
+    .msg{stroke:#333;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+    .msgd{stroke:#666;stroke-width:1.2;fill:none;stroke-dasharray:5,4;marker-end:url(#arrT)}
+    .fail{stroke:#c62828;stroke-width:1.6;fill:none;marker-end:url(#arrF)}
+    .note{fill:#fffde7;stroke:#f9a825;stroke-width:1}
+    .note-t{font-size:11px;font-style:italic;fill:#5d4037}
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="arrT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+    <marker id="arrF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="26" text-anchor="middle" class="title">Chat Flow — Sequence Diagram (3 Paths)</text>
+
+  <!-- Participants (x positions) -->
+  <!-- User=80, Web=250, API=440, Cache=620, Agent=800, Tools=980, RAG=1120, GW=1240, P=1340 -->
+
+  <rect x="40" y="50" width="80" height="40" rx="4" class="actor"/>
+  <text x="80" y="74" text-anchor="middle" class="label" font-weight="bold">User</text>
+
+  <rect x="180" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="250" y="68" text-anchor="middle" class="label">apps/web</text>
+  <text x="250" y="82" text-anchor="middle" class="label">useTokenStream</text>
+
+  <rect x="370" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="440" y="68" text-anchor="middle" class="label">apps/api</text>
+  <text x="440" y="82" text-anchor="middle" class="label">POST /chat</text>
+
+  <rect x="550" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="620" y="68" text-anchor="middle" class="label">Redis Caches</text>
+  <text x="620" y="82" text-anchor="middle" class="label">exact + semantic</text>
+
+  <rect x="730" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="800" y="74" text-anchor="middle" class="label">AgentLoop</text>
+
+  <rect x="910" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="980" y="74" text-anchor="middle" class="label">ToolRegistry</text>
+
+  <rect x="1050" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="1120" y="68" text-anchor="middle" class="label">Hybrid</text>
+  <text x="1120" y="82" text-anchor="middle" class="label">Pipeline</text>
+
+  <rect x="1180" y="50" width="140" height="40" rx="4" class="part"/>
+  <text x="1250" y="74" text-anchor="middle" class="label">InferenceGateway</text>
+
+  <rect x="1330" y="50" width="60" height="40" rx="4" class="part"/>
+  <text x="1360" y="68" text-anchor="middle" class="label">vLLM</text>
+  <text x="1360" y="82" text-anchor="middle" class="label">primary</text>
+
+  <!-- Lifelines -->
+  <line x1="80" y1="90" x2="80" y2="860" class="lifeline"/>
+  <line x1="250" y1="90" x2="250" y2="860" class="lifeline"/>
+  <line x1="440" y1="90" x2="440" y2="860" class="lifeline"/>
+  <line x1="620" y1="90" x2="620" y2="860" class="lifeline"/>
+  <line x1="800" y1="90" x2="800" y2="860" class="lifeline"/>
+  <line x1="980" y1="90" x2="980" y2="860" class="lifeline"/>
+  <line x1="1120" y1="90" x2="1120" y2="860" class="lifeline"/>
+  <line x1="1250" y1="90" x2="1250" y2="860" class="lifeline"/>
+  <line x1="1360" y1="90" x2="1360" y2="860" class="lifeline"/>
+
+  <!-- Messages -->
+  <path class="msg" d="M 80 120 L 245 120"/>
+  <text x="165" y="115" text-anchor="middle" class="label">submit query</text>
+
+  <path class="msg" d="M 250 150 L 435 150"/>
+  <text x="343" y="145" text-anchor="middle" class="label">POST /chat (SSE)</text>
+
+  <!-- Path 1: Cache Hit -->
+  <rect x="440" y="170" width="350" height="60" rx="4" class="note"/>
+  <text x="450" y="188" class="note-t">Path 1 — Cache Hit</text>
+  <text x="450" y="204" class="note-t">API checks exact + semantic cache;</text>
+  <text x="450" y="220" class="note-t">returns immediately without LLM call.</text>
+
+  <path class="msg" d="M 440 250 L 615 250"/>
+  <text x="527" y="245" text-anchor="middle" class="label">lookup(query)</text>
+  <path class="msgd" d="M 620 275 L 445 275"/>
+  <text x="532" y="270" text-anchor="middle" class="label">hit — cached tokens</text>
+  <path class="msg" d="M 440 300 L 255 300"/>
+  <text x="347" y="295" text-anchor="middle" class="label">stream cached tokens (cache=hit)</text>
+
+  <!-- Path 2: Cache Miss -->
+  <rect x="440" y="325" width="450" height="40" rx="4" class="note"/>
+  <text x="450" y="343" class="note-t">Path 2 — Cache Miss</text>
+  <text x="450" y="358" class="note-t">API runs the agent; agent calls tool; tool queries RAG; RAG retrieves; second LLM call composes answer.</text>
+
+  <path class="msg" d="M 440 385 L 795 385"/>
+  <text x="617" y="380" text-anchor="middle" class="label">run(message, request_id)</text>
+
+  <path class="msg" d="M 800 415 L 1245 415"/>
+  <text x="1022" y="410" text-anchor="middle" class="label">generate(messages, tools)</text>
+
+  <path class="msg" d="M 1250 445 L 1355 445"/>
+  <text x="1302" y="440" text-anchor="middle" class="label">POST /v1/chat/completions</text>
+
+  <path class="msgd" d="M 1360 470 L 1255 470"/>
+  <text x="1307" y="465" text-anchor="middle" class="label">tool_calls(search_catalog)</text>
+
+  <path class="msgd" d="M 1250 495 L 805 495"/>
+  <text x="1027" y="490" text-anchor="middle" class="label">tool_calls</text>
+
+  <path class="msg" d="M 800 520 L 975 520"/>
+  <text x="887" y="515" text-anchor="middle" class="label">execute("search_catalog")</text>
+
+  <path class="msg" d="M 980 545 L 1115 545"/>
+  <text x="1047" y="540" text-anchor="middle" class="label">retrieve(query)</text>
+
+  <path class="msgd" d="M 1120 570 L 985 570"/>
+  <text x="1052" y="565" text-anchor="middle" class="label">relevant chunks</text>
+
+  <path class="msgd" d="M 980 595 L 805 595"/>
+  <text x="892" y="590" text-anchor="middle" class="label">tool result JSON</text>
+
+  <path class="msg" d="M 800 620 L 1245 620"/>
+  <text x="1022" y="615" text-anchor="middle" class="label">generate with tool results</text>
+
+  <path class="msg" d="M 1250 645 L 1355 645"/>
+  <text x="1302" y="640" text-anchor="middle" class="label">final completions</text>
+
+  <path class="msgd" d="M 1360 670 L 1255 670"/>
+  <text x="1307" y="665" text-anchor="middle" class="label">text tokens</text>
+
+  <path class="msg" d="M 440 700 L 615 700"/>
+  <text x="527" y="695" text-anchor="middle" class="label">save to exact + semantic</text>
+
+  <path class="msg" d="M 440 725 L 255 725"/>
+  <text x="347" y="720" text-anchor="middle" class="label">SSE tokens (backend=vllm, cache=miss)</text>
+
+  <!-- Path 3: Failover -->
+  <rect x="800" y="750" width="550" height="40" rx="4" class="note"/>
+  <text x="810" y="768" class="note-t">Path 3 — Primary Failure &amp; Failover</text>
+  <text x="810" y="783" class="note-t">CircuitBreaker OPENs after N failures; gateway routes to fallback (llama.cpp).</text>
+
+  <path class="msg" d="M 800 815 L 1245 815"/>
+  <text x="1022" y="810" text-anchor="middle" class="label">generate()</text>
+
+  <path class="msg" d="M 1250 840 L 1355 840"/>
+  <text x="1302" y="835" text-anchor="middle" class="label">request</text>
+
+  <path class="fail" d="M 1360 860 L 1255 860"/>
+  <text x="1307" y="855" text-anchor="middle" class="label" fill="#c62828">timeout / HTTP 500</text>
+
+</svg>
