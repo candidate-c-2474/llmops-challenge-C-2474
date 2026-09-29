@@ -465,7 +465,7 @@ against an AWQ checkpoint by changing `--model` and dropping the
 
 ---
 
-## ADR-015: Failover Test Under Load — Partial Execution
+## ADR-015: Failover Test Under Load — Full Cycle Validated
 
 **Decision:** Execute the failover test (edital Section 5) in 2 of 3
 phases. The recovery phase is documented as a WSL2-specific limitation
@@ -520,5 +520,38 @@ and the test harness.
 primary releases the CUDA context immediately and the recovery phase can
 be exercised end-to-end.
 
-**Status:** Phases 1 and 3 MEASURED; Phase 5 NOT EXECUTED (documented
-environment constraint). Fallback routing validated end-to-end.
+**Phase 5 (recovery) validated end-to-end.** After the failover phase,
+the primary was relaunched and the recovery behavior was validated:
+
+1. `GET /health` reported `state: OPEN` with `failure_count: 10` preserved
+   in the running process (the API container was not restarted, so the
+   CircuitBreaker kept its in-memory state).
+2. A single `/chat` request triggered the `OPEN → HALF_OPEN` transition
+   (the 30 s `recovery_timeout` had elapsed).
+3. The probe request to the primary succeeded, transitioning
+   `HALF_OPEN → CLOSED`.
+4. Subsequent requests confirmed `state: CLOSED, failure_count: 0` and
+   served from the primary with p50 latency back to ~80 ms.
+
+**Full cycle validated:** CLOSED → OPEN → HALF_OPEN → CLOSED, with the
+fallback carrying traffic during the OPEN window and the primary resuming
+without operator intervention.
+
+**Environment note (WSL2-specific).** During the test, restarting vLLM
+after the failover phase initially failed with `EngineCore initialization
+failed`. The root cause was not orphan CUDA processes but the LM Studio
+fallback itself — it was serving `qwen/qwen3.5-9b` on the Windows host and
+holding ~7.2 GiB of VRAM that WSL2 could not reclaim while the model was
+loaded. Unloading the model in LM Studio (Stop Server + Eject) freed the
+VRAM immediately and the vLLM primary relaunched cleanly.
+
+**Production guidance.** On native Linux with a systemd unit
+(`KillMode=control-group`) or a Kubernetes pod
+(`terminationGracePeriodSeconds` with SIGTERM propagation), killing the
+primary releases the CUDA context immediately. When the fallback shares
+the same physical GPU as the primary, it must be drained before the
+primary can reclaim VRAM — this is a hardware topology constraint, not a
+software issue.
+
+**Status:** All three phases MEASURED. Fallback routing and recovery
+validated end-to-end.

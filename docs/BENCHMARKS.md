@@ -312,28 +312,38 @@ checkpoint with a different `--model` argument.
 
 ---
 
-## 9. Failover Test Under Load
+## 9. Failover Test Under Load — Full Cycle
 
-**Status: PARTIALLY MEASURED (phases 1 and 3 of 3).**
+**Status: FULLY MEASURED (3 of 3 phases).**
 
 Full context in `docs/DECISIONS.md` ADR-015.
 
 | Phase | Description | Requests | OK | ERR | p50 latency | CB state |
 |---|---|---|---|---|---|---|
 | 1 | Baseline (primary alive) | 10 | 10 | 0 | 80.5 ms | CLOSED |
-| 3 | Failover (primary killed mid-test) | 10 | 10 | 0 | 43,200 ms | OPEN |
+| 3 | Failover (primary killed mid-test) | 10 | **10** | **0** | 43,200 ms | OPEN |
+| 5 | Recovery (primary relaunched) | 3 | 3 | 0 | ~80 ms | CLOSED |
 
 **Primary:** vLLM 0.29, `Qwen/Qwen2.5-1.5B-Instruct`, FP8, port 8001.
 **Fallback:** LM Studio, `qwen/qwen3.5-9b`, port 1234 (Windows host).
 **Gateway:** `CircuitBreaker(failure_threshold=3, recovery_timeout=30s)`.
 
-**Key result:** during the failover phase, zero user requests failed
-even though the primary was killed mid-run. The CircuitBreaker opened
-after 3 consecutive failures and routed all remaining requests to the
-fallback. Latency rose from ~80 ms (primary FP8 on GPU) to ~43 s
-(fallback 9 B GGUF on the Windows host via HTTP), which is the expected
-cost of falling back to a substantially larger model on different
-hardware.
+**Key result — no failed user requests during failover.** During the
+failover phase, zero user requests failed even though the primary was
+killed mid-run. The CircuitBreaker opened after 3 consecutive failures
+and routed all remaining requests to the fallback. Latency rose from
+~80 ms (primary FP8 on GPU) to ~43 s (fallback 9 B GGUF on the Windows
+host via HTTP), which is the expected cost of falling back to a
+substantially larger model on different hardware.
 
-**Phase 5 (recovery) not executed** — see ADR-015 for the WSL2-specific
-reason and the unit-test coverage that substitutes for it.
+**Key result — automatic recovery.** After the primary was relaunched,
+the CircuitBreaker transitioned `OPEN → HALF_OPEN → CLOSED` in response
+to a single successful `/chat` request, once the 30 s `recovery_timeout`
+had elapsed. No operator intervention was required beyond relaunching
+the vLLM process. Full cycle: CLOSED → OPEN → HALF_OPEN → CLOSED.
+
+**Environment note.** The primary could only be relaunched after the
+LM Studio fallback was unloaded from VRAM (Stop Server + Eject). WSL2
+cannot reclaim CUDA memory held by a Windows-side process, so when the
+primary and fallback share a physical GPU the fallback must be drained
+first. See ADR-015 for the production guidance.
