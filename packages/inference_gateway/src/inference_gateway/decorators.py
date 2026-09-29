@@ -8,6 +8,7 @@ import asyncio
 import structlog
 from typing import AsyncIterator, Any
 from .interfaces import InferenceBackend, InferenceRequest, InferenceResponse
+from .metrics import record_ttft, record_tokens_per_second
 
 logger = structlog.get_logger(__name__)
 
@@ -26,6 +27,10 @@ class MetricsBackend(InferenceBackend):
         elapsed = time.monotonic() - start
         self.latency_samples.append(elapsed)
         res.backend_name = self.name
+        # Non-streaming path: record the full round-trip as a TTFT proxy.
+        # A true TTFT is only measurable when the adapter uses
+        # generate_stream(); see the streaming handler below.
+        record_ttft(self.name, elapsed)
         return res
 
     async def generate_stream(self, request: InferenceRequest) -> AsyncIterator[dict[str, Any]]:
@@ -37,6 +42,7 @@ class MetricsBackend(InferenceBackend):
             if not first_token_received:
                 ttft = (time.monotonic() - start_time) * 1000.0
                 logger.info("inference.stream.ttft", backend=self.name, ttft_ms=round(ttft, 2))
+                record_ttft(self.name, ttft / 1000.0)
                 first_token_received = True
             
             if chunk.get("content"):
@@ -47,6 +53,7 @@ class MetricsBackend(InferenceBackend):
         if elapsed > 0:
             tps = token_count / elapsed
             logger.info("inference.stream.completed", backend=self.name, tokens=token_count, tokens_per_sec=round(tps, 2))
+            record_tokens_per_second(self.name, tps)
 
 class RetryBackend(InferenceBackend):
     def __init__(self, backend: InferenceBackend, max_retries: int = 2, delay: float = 0.5):

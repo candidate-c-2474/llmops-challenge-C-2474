@@ -1,6 +1,7 @@
 from typing import AsyncIterator, Any
 from .interfaces import InferenceBackend, InferenceRequest, InferenceResponse
 from .circuit_breaker import CircuitBreaker
+from .metrics import record_backend_selected, record_circuit_transition
 
 class InferenceGateway:
     def __init__(self, primary: InferenceBackend, fallback: InferenceBackend):
@@ -26,9 +27,12 @@ class InferenceGateway:
             try:
                 res = await self.primary.generate(request)
                 self.cb.record_success()
+                record_backend_selected(self.primary.name, role="primary")
                 return res
             except Exception:
                 self.cb.record_failure()
+                record_circuit_transition(from_state="CLOSED_OR_HALF_OPEN", to_state="FAILURE")
+        record_backend_selected(self.fallback.name, role="fallback")
         return await self.fallback.generate(request)
 
     async def generate_stream(self, request: InferenceRequest) -> AsyncIterator[dict[str, Any]]:
@@ -37,8 +41,11 @@ class InferenceGateway:
                 async for chunk in self.primary.generate_stream(request):
                     yield chunk
                 self.cb.record_success()
+                record_backend_selected(self.primary.name, role="primary")
                 return
             except Exception:
                 self.cb.record_failure()
+                record_circuit_transition(from_state="CLOSED_OR_HALF_OPEN", to_state="FAILURE")
+        record_backend_selected(self.fallback.name, role="fallback")
         async for chunk in self.fallback.generate_stream(request):
             yield chunk

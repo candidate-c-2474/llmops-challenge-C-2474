@@ -15,3 +15,12 @@ __all__ = [
     "VLLMBackend", "LlamaCppBackend", "FakeBackend",
     "CircuitBreaker", "CircuitState", "MetricsBackend", "RetryBackend", "InferenceGateway"
 ]
+
+from .metrics import (  # noqa: F401
+    record_backend_selected,
+    record_circuit_transition,
+    record_ttft,
+    record_tokens_per_second,
+    record_tool_call,
+    metrics_available,
+)
