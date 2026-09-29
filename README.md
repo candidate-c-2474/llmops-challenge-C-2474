@@ -103,6 +103,27 @@ is required.
 
 ---
 
+## 2.4 Security posture
+
+- **Prompt injection guard.** Catalog text reaching the LLM through the
+  `search_catalog` tool is filtered by a pattern-based sanitizer
+  (`packages/rag_core/src/rag_core/security/prompt_guard.py`). Matches are
+  replaced with a redaction marker before the content enters the model
+  context. Validated end-to-end; see `docs/DECISIONS.md` ADR-010.
+- **Rate limiting.** 60 requests per minute per IP, enforced by
+  `apps/api/src/api/middleware/rate_limit.py`.
+- **Token budget.** Per-request token accounting middleware
+  (`apps/api/src/api/middleware/token_budget.py`).
+- **Anonymity gate.** `scripts/check_anonymity.sh` runs in CI and fails
+  the build if personal data patterns appear in the repo.
+
+- **Prometheus metrics.** `/metrics` endpoint exposes standard HTTP
+  metrics (request count, latency histograms, in-flight requests) via
+  `prometheus-fastapi-instrumentator`. In the offline build environment
+  the package is mounted from the host's site-packages via
+  `/opt/prom-wheelhouse` (see `docs/DECISIONS.md` ADR-011). In a
+  networked build, it would be a normal `pip install` dependency.
+
 ## 3. Scope cuts (48 h) and next steps (one more week)
 
 ### 3.1 Scope cuts
