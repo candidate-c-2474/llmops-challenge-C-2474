@@ -462,3 +462,63 @@ against an AWQ checkpoint by changing `--model` and dropping the
 `--quantization` flag (AWQ is inferred from the checkpoint config).
 
 **Status:** **MEASURED**, documented in BENCHMARKS.md Section 1b.
+
+---
+
+## ADR-015: Failover Test Under Load — Partial Execution
+
+**Decision:** Execute the failover test (edital Section 5) in 2 of 3
+phases. The recovery phase is documented as a WSL2-specific limitation
+rather than re-executed.
+
+**Test setup:**
+
+- Primary backend: vLLM 0.29 serving `Qwen/Qwen2.5-1.5B-Instruct` (FP8,
+  port 8001, WSL2).
+- Fallback backend: LM Studio serving `qwen/qwen3.5-9b` (port 1234,
+  Windows host, reachable via `host.docker.internal`).
+- Gateway: `InferenceGateway` with `CircuitBreaker(failure_threshold=3,
+  recovery_timeout=30s)`.
+- Test harness: `bench/run_failover_test.py`, 10 requests per phase.
+
+**Phases executed:**
+
+| Phase | Requests | OK | ERR | p50 latency | CB state |
+|---|---|---|---|---|---|
+| 1 — baseline (primary alive) | 10 | 10 | 0 | 80.5 ms | CLOSED |
+| 3 — failover (primary killed) | 10 | 10 | 0 | 43,200 ms | OPEN |
+
+**Result.** The edital requirement is satisfied: *"Kill the primary
+during a load test. Traffic must move to the fallback with no failed
+user requests."* All 10 requests during Phase 3 completed successfully.
+The CircuitBreaker opened after 3 consecutive failures and routed all
+subsequent requests to the LM Studio fallback. Latency increased from
+~80 ms (primary) to ~43 s (fallback), which is the expected cost of
+falling back from a 1.5 B FP8 model on GPU to a 9 B GGUF model on CPU.
+
+**Phase 5 (recovery) not executed.** Restarting the primary after the
+failover phase failed with `EngineCore initialization failed` from vLLM.
+Root cause: on WSL2, `kill -9` on the APIServer process does not kill the
+child EngineCore workers. Those orphans retain the CUDA context and
+approximately 7.2 GiB of VRAM even after explicit `kill -9` on the
+visible PIDs. `nvidia-smi` reports only ~700 MiB free, below the threshold
+needed to relaunch vLLM. The only reliable way to reclaim the VRAM on
+WSL2 is `wsl --shutdown`, which would terminate the running Docker stack
+and the test harness.
+
+**What covers the recovery behavior instead:**
+
+- `packages/inference_gateway/tests/test_circuit_breaker.py::test_gateway_fallback_on_failure`
+  asserts the CLOSED → OPEN transition and the fallback routing.
+- `packages/inference_gateway/src/inference_gateway/circuit_breaker.py`
+  implements the OPEN → HALF_OPEN → CLOSED transition with a single test
+  request. This is unit-tested.
+
+**Production guidance.** On native Linux with a systemd unit
+(`KillMode=control-group`) or a Kubernetes pod
+(`terminationGracePeriodSeconds` with SIGTERM propagation), killing the
+primary releases the CUDA context immediately and the recovery phase can
+be exercised end-to-end.
+
+**Status:** Phases 1 and 3 MEASURED; Phase 5 NOT EXECUTED (documented
+environment constraint). Fallback routing validated end-to-end.

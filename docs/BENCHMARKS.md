@@ -309,3 +309,31 @@ pre-quantized checkpoint. In the offline environment we substituted
 runtime FP8 as an equally-valid precision axis. On a networked builder
 the same `bench/run_load_test.py` script would run against an AWQ
 checkpoint with a different `--model` argument.
+
+---
+
+## 9. Failover Test Under Load
+
+**Status: PARTIALLY MEASURED (phases 1 and 3 of 3).**
+
+Full context in `docs/DECISIONS.md` ADR-015.
+
+| Phase | Description | Requests | OK | ERR | p50 latency | CB state |
+|---|---|---|---|---|---|---|
+| 1 | Baseline (primary alive) | 10 | 10 | 0 | 80.5 ms | CLOSED |
+| 3 | Failover (primary killed mid-test) | 10 | 10 | 0 | 43,200 ms | OPEN |
+
+**Primary:** vLLM 0.29, `Qwen/Qwen2.5-1.5B-Instruct`, FP8, port 8001.
+**Fallback:** LM Studio, `qwen/qwen3.5-9b`, port 1234 (Windows host).
+**Gateway:** `CircuitBreaker(failure_threshold=3, recovery_timeout=30s)`.
+
+**Key result:** during the failover phase, zero user requests failed
+even though the primary was killed mid-run. The CircuitBreaker opened
+after 3 consecutive failures and routed all remaining requests to the
+fallback. Latency rose from ~80 ms (primary FP8 on GPU) to ~43 s
+(fallback 9 B GGUF on the Windows host via HTTP), which is the expected
+cost of falling back to a substantially larger model on different
+hardware.
+
+**Phase 5 (recovery) not executed** — see ADR-015 for the WSL2-specific
+reason and the unit-test coverage that substitutes for it.

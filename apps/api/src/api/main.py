@@ -131,7 +131,9 @@ async def startup_event():
         vllm_url = os.getenv("VLLM_URL", "http://172.25.12.152:8001/v1")
         llamacpp_url = os.getenv("LLAMACPP_URL", vllm_url)
         raw_primary = VLLMBackend(base_url=vllm_url, model_name="Qwen/Qwen2.5-1.5B-Instruct")
-        raw_fallback = VLLMBackend(base_url=llamacpp_url, model_name="Qwen/Qwen2.5-1.5B-Instruct")
+        # Fallback points to the LM Studio instance on the Windows host
+        # (OpenAI-compatible; served model is qwen/qwen3.5-9b).
+        raw_fallback = VLLMBackend(base_url=llamacpp_url, model_name="qwen/qwen3.5-9b")
         logger.info("api.backend.real_mode", primary=vllm_url, fallback=llamacpp_url)
 
     # Apply Decorators (Metrics and Retries)

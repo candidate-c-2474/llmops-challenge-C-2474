@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request
 router = APIRouter(tags=["Health"])
 logger = structlog.get_logger(__name__)
 
-PROBE_TIMEOUT_S = 2.0
+PROBE_TIMEOUT_S = 8.0  # RetryBackend uses 0.5 + 1.0 + 2.0 = 3.5s of backoff; probe must exceed it.
 
 
 async def _probe_backend(backend) -> bool:
@@ -26,12 +26,16 @@ async def _probe_backend(backend) -> bool:
         await asyncio.wait_for(backend.generate(req), timeout=PROBE_TIMEOUT_S)
         return True
     except asyncio.TimeoutError:
+        logger.info("probe.timeout", backend=backend.name, timeout_s=PROBE_TIMEOUT_S)
         return False
-    except Exception:
+    except Exception as e:
         # Reachable if we got an HTTP-level response, even a non-200.
         # httpx raises HTTPStatusError for non-2xx; that still means the
         # backend is up. Connection errors are the real failure signal.
-        return _is_reachable_error()
+        reachable = _is_reachable_error()
+        logger.info("probe.error", backend=backend.name, error=str(e),
+                    error_type=type(e).__name__, reachable=reachable)
+        return reachable
 
 
 def _is_reachable_error() -> bool:

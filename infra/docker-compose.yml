@@ -49,7 +49,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       VLLM_URL: http://172.25.12.152:8001/v1
-      LLAMACPP_URL: http://172.25.12.152:8001/v1
+      LLAMACPP_URL: http://host.docker.internal:1234/v1
       USE_FAKE_BACKEND: "false"
       HF_HUB_OFFLINE: "1"
       TRANSFORMERS_OFFLINE: "1"
