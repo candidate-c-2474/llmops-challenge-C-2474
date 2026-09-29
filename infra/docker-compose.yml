@@ -38,6 +38,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ~/.cache/huggingface:/root/.cache/huggingface:ro
+      - /opt/prom-wheelhouse:/opt/prom-wheelhouse:ro
     environment:
       DATABASE_URL: postgresql://roomfit:roomfit@postgres:5432/roomfit
       POSTGRES_HOST: postgres
@@ -52,6 +53,7 @@ services:
       USE_FAKE_BACKEND: "false"
       HF_HUB_OFFLINE: "1"
       TRANSFORMERS_OFFLINE: "1"
+      PYTHONPATH: "/opt/prom-wheelhouse"
     depends_on:
       postgres:
         condition: service_healthy

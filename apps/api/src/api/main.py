@@ -21,6 +21,8 @@ from rag_core.tools import (
 )
 from rag_core.agent.loop import AgentLoop
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 logger = structlog.get_logger(__name__)
 config = RAGConfig()
 
@@ -40,6 +42,17 @@ app.add_middleware(
 
 app.add_middleware(StructuredLoggingMiddleware)
 app.add_middleware(RateLimitMiddleware, requests_per_minute=60)
+
+
+# Prometheus metrics exposure at /metrics.
+# The package is mounted from the host's site-packages via
+# /opt/prom-wheelhouse (see docker-compose.yml and ADR-011), because the
+# offline build environment cannot pip install it.
+Instrumentator(
+    should_group_status_codes=False,
+    should_ignore_untemplated=True,
+    should_instrument_requests_inprogress=True,
+).instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
 
 
 # Adapt the InferenceGateway to match the Agent's expected interface
