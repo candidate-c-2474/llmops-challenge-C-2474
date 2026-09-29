@@ -15,10 +15,30 @@ class HybridRetrievalPipeline:
         top_k_retrieve = self._config.top_k_retrieve
         top_k_final = top_k or self._config.top_k_rerank
 
-        tasks = [r.retrieve(query, top_k=top_k_retrieve) for r in self._retrievers]
+        # If any retriever is a DenseRetriever running in hash-fallback mode,
+        # exclude it from the fusion — its similarity scores are noise and
+        # would dominate the RRF. See docs/DECISIONS.md ADR-012.
+        active_retrievers = []
+        for r in self._retrievers:
+            mode = getattr(r, "encoder_mode", None)
+            if mode == "hash-fallback":
+                continue  # skip noise source
+            active_retrievers.append(r)
+        if not active_retrievers:
+            active_retrievers = list(self._retrievers)
+
+        tasks = [r.retrieve(query, top_k=top_k_retrieve) for r in active_retrievers]
         all_results = await asyncio.gather(*tasks, return_exceptions=True)
 
         retriever_results = [res if not isinstance(res, Exception) else [] for res in all_results]
+
+        # Adjust weights to match active retrievers (BM25 keeps its weight,
+        # dense is dropped when in fallback mode).
+        if len(active_retrievers) < len(self._retrievers):
+            self._active_weights = [self._config.bm25_weight] * len(active_retrievers)
+        else:
+            self._active_weights = None
+
         fused = self._reciprocal_rank_fusion(retriever_results)
 
         if self._reranker and not skip_rerank and fused:
@@ -28,7 +48,9 @@ class HybridRetrievalPipeline:
 
     def _reciprocal_rank_fusion(self, result_lists: list[list[RetrievedChunk]]) -> list[RetrievedChunk]:
         k = self._config.rrf_k
-        weights = [self._config.bm25_weight, self._config.dense_weight]
+        weights = getattr(self, "_active_weights", None) or [
+            self._config.bm25_weight, self._config.dense_weight
+        ]
         scores = defaultdict(float)
         best_chunk = {}
 

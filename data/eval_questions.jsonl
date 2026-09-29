@@ -1,0 +1,60 @@
+{"id": "Q001", "type": "retrieval", "question": "Show me a office chair.", "expected_product_ids": ["CHAIR-161"], "expected_top_k": 5, "discriminative_token": "office"}
+{"id": "Q002", "type": "retrieval", "question": "Show me a shag rug.", "expected_product_ids": ["RUG-048"], "expected_top_k": 5, "discriminative_token": "shag"}
+{"id": "Q003", "type": "retrieval", "question": "Show me a contemporary sofa.", "expected_product_ids": ["SOFA-103"], "expected_top_k": 5, "discriminative_token": "contemporary"}
+{"id": "Q004", "type": "retrieval", "question": "Show me a ergonomic chair.", "expected_product_ids": ["CHAIR-061"], "expected_top_k": 5, "discriminative_token": "ergonomic"}
+{"id": "Q005", "type": "retrieval", "question": "Show me a birch desk.", "expected_product_ids": ["DESK-120"], "expected_top_k": 5, "discriminative_token": "birch"}
+{"id": "Q006", "type": "retrieval", "question": "Show me a chandelier lighting.", "expected_product_ids": ["LAMP-184"], "expected_top_k": 5, "discriminative_token": "chandelier"}
+{"id": "Q007", "type": "retrieval", "question": "Show me a accent chair.", "expected_product_ids": ["CHAIR-029"], "expected_top_k": 5, "discriminative_token": "accent"}
+{"id": "Q008", "type": "retrieval", "question": "Show me a computer desk.", "expected_product_ids": ["DESK-168"], "expected_top_k": 5, "discriminative_token": "computer"}
+{"id": "Q009", "type": "retrieval", "question": "Show me a vase decor.", "expected_product_ids": ["DECOR-075"], "expected_top_k": 5, "discriminative_token": "vase"}
+{"id": "Q010", "type": "retrieval", "question": "Show me a vase decor.", "expected_product_ids": ["DECOR-156"], "expected_top_k": 5, "discriminative_token": "vase"}
+{"id": "Q011", "type": "retrieval", "question": "Show me a mid-century sofa.", "expected_product_ids": ["SOFA-105"], "expected_top_k": 5, "discriminative_token": "mid-century"}
+{"id": "Q012", "type": "retrieval", "question": "Show me a nightstand table.", "expected_product_ids": ["TABLE-237"], "expected_top_k": 5, "discriminative_token": "nightstand"}
+{"id": "Q013", "type": "retrieval", "question": "Show me a linen chair.", "expected_product_ids": ["CHAIR-276"], "expected_top_k": 5, "discriminative_token": "linen"}
+{"id": "Q014", "type": "retrieval", "question": "Show me a bunk bed.", "expected_product_ids": ["BED-076"], "expected_top_k": 5, "discriminative_token": "bunk"}
+{"id": "Q015", "type": "retrieval", "question": "Show me a japanese decor.", "expected_product_ids": ["DECOR-070"], "expected_top_k": 5, "discriminative_token": "japanese"}
+{"id": "Q016", "type": "retrieval", "question": "Show me a chandelier lighting.", "expected_product_ids": ["LAMP-173"], "expected_top_k": 5, "discriminative_token": "chandelier"}
+{"id": "Q017", "type": "retrieval", "question": "Show me a brass lighting.", "expected_product_ids": ["LAMP-099"], "expected_top_k": 5, "discriminative_token": "brass"}
+{"id": "Q018", "type": "retrieval", "question": "Show me a geometric rug.", "expected_product_ids": ["RUG-064"], "expected_top_k": 5, "discriminative_token": "geometric"}
+{"id": "Q019", "type": "retrieval", "question": "Show me a chaise sofa.", "expected_product_ids": ["SOFA-099"], "expected_top_k": 5, "discriminative_token": "chaise"}
+{"id": "Q020", "type": "retrieval", "question": "Show me a black lighting.", "expected_product_ids": ["LAMP-163"], "expected_top_k": 5, "discriminative_token": "black"}
+{"id": "Q021", "type": "attribute", "question": "What is the price of LAMP-181?", "expected_product_ids": ["LAMP-181"], "expected_top_k": 5}
+{"id": "Q022", "type": "attribute", "question": "Is DECOR-105 in stock?", "expected_product_ids": ["DECOR-105"], "expected_top_k": 5}
+{"id": "Q023", "type": "attribute", "question": "What is the price of SHELF-231?", "expected_product_ids": ["SHELF-231"], "expected_top_k": 5}
+{"id": "Q024", "type": "attribute", "question": "Is CHAIR-283 in stock?", "expected_product_ids": ["CHAIR-283"], "expected_top_k": 5}
+{"id": "Q025", "type": "attribute", "question": "What is the price of TABLE-066?", "expected_product_ids": ["TABLE-066"], "expected_top_k": 5}
+{"id": "Q026", "type": "attribute", "question": "What are the dimensions of DESK-178?", "expected_product_ids": ["DESK-178"], "expected_top_k": 5}
+{"id": "Q027", "type": "attribute", "question": "What are the dimensions of RUG-138?", "expected_product_ids": ["RUG-138"], "expected_top_k": 5}
+{"id": "Q028", "type": "attribute", "question": "What are the dimensions of DESK-155?", "expected_product_ids": ["DESK-155"], "expected_top_k": 5}
+{"id": "Q029", "type": "attribute", "question": "Is BED-147 in stock?", "expected_product_ids": ["BED-147"], "expected_top_k": 5}
+{"id": "Q030", "type": "attribute", "question": "What are the dimensions of DECOR-079?", "expected_product_ids": ["DECOR-079"], "expected_top_k": 5}
+{"id": "Q031", "type": "attribute", "question": "What are the dimensions of DECOR-009?", "expected_product_ids": ["DECOR-009"], "expected_top_k": 5}
+{"id": "Q032", "type": "attribute", "question": "What is the price of SHELF-067?", "expected_product_ids": ["SHELF-067"], "expected_top_k": 5}
+{"id": "Q033", "type": "attribute", "question": "Is DECOR-131 in stock?", "expected_product_ids": ["DECOR-131"], "expected_top_k": 5}
+{"id": "Q034", "type": "attribute", "question": "What are the dimensions of LAMP-017?", "expected_product_ids": ["LAMP-017"], "expected_top_k": 5}
+{"id": "Q035", "type": "attribute", "question": "Is DESK-179 in stock?", "expected_product_ids": ["DESK-179"], "expected_top_k": 5}
+{"id": "Q036", "type": "fit", "question": "Does SHELF-095 fit in a room 153.0x107.2 cm with height 236.4 cm?", "expected_product_ids": ["SHELF-095"], "expected_top_k": 5, "fit_space": {"width": 153.0, "height": 236.4, "depth": 107.2}}
+{"id": "Q037", "type": "fit", "question": "Does TABLE-204 fit in a room 224.0x126.2 cm with height 66.9 cm?", "expected_product_ids": ["TABLE-204"], "expected_top_k": 5, "fit_space": {"width": 224.0, "height": 66.9, "depth": 126.2}}
+{"id": "Q038", "type": "fit", "question": "Does CHAIR-207 fit in a room 104.1x83.8 cm with height 91.3 cm?", "expected_product_ids": ["CHAIR-207"], "expected_top_k": 5, "fit_space": {"width": 104.1, "height": 91.3, "depth": 83.8}}
+{"id": "Q039", "type": "fit", "question": "Does DESK-243 fit in a room 225.4x111.4 cm with height 128.0 cm?", "expected_product_ids": ["DESK-243"], "expected_top_k": 5, "fit_space": {"width": 225.4, "height": 128.0, "depth": 111.4}}
+{"id": "Q040", "type": "fit", "question": "Does DECOR-092 fit in a room 52.6x71.5 cm with height 75.6 cm?", "expected_product_ids": ["DECOR-092"], "expected_top_k": 5, "fit_space": {"width": 52.6, "height": 75.6, "depth": 71.5}}
+{"id": "Q041", "type": "fit", "question": "Does DESK-023 fit in a room 148.2x111.0 cm with height 96.0 cm?", "expected_product_ids": ["DESK-023"], "expected_top_k": 5, "fit_space": {"width": 148.2, "height": 96.0, "depth": 111.0}}
+{"id": "Q042", "type": "fit", "question": "Does TABLE-165 fit in a room 146.9x98.8 cm with height 103.0 cm?", "expected_product_ids": ["TABLE-165"], "expected_top_k": 5, "fit_space": {"width": 146.9, "height": 103.0, "depth": 98.8}}
+{"id": "Q043", "type": "fit", "question": "Does SHELF-240 fit in a room 145.3x64.6 cm with height 147.3 cm?", "expected_product_ids": ["SHELF-240"], "expected_top_k": 5, "fit_space": {"width": 145.3, "height": 147.3, "depth": 64.6}}
+{"id": "Q044", "type": "fit", "question": "Does DECOR-129 fit in a room 116.0x30.4 cm with height 132.3 cm?", "expected_product_ids": ["DECOR-129"], "expected_top_k": 5, "fit_space": {"width": 116.0, "height": 132.3, "depth": 30.4}}
+{"id": "Q045", "type": "fit", "question": "Does BED-152 fit in a room 165.0x247.1 cm with height 84.5 cm?", "expected_product_ids": ["BED-152"], "expected_top_k": 5, "fit_space": {"width": 165.0, "height": 84.5, "depth": 247.1}}
+{"id": "Q046", "type": "fit", "question": "Does BED-029 fit in a room 131.5x263.9 cm with height 78.8 cm?", "expected_product_ids": ["BED-029"], "expected_top_k": 5, "fit_space": {"width": 131.5, "height": 78.8, "depth": 263.9}}
+{"id": "Q047", "type": "fit", "question": "Does RUG-193 fit in a room 252.9x504.9 cm with height 25.5 cm?", "expected_product_ids": ["RUG-193"], "expected_top_k": 5, "fit_space": {"width": 252.9, "height": 25.5, "depth": 504.9}}
+{"id": "Q048", "type": "fit", "question": "Does CHAIR-293 fit in a room 74.2x102.0 cm with height 122.8 cm?", "expected_product_ids": ["CHAIR-293"], "expected_top_k": 5, "fit_space": {"width": 74.2, "height": 122.8, "depth": 102.0}}
+{"id": "Q049", "type": "fit", "question": "Does RUG-167 fit in a room 240.2x397.8 cm with height 57.0 cm?", "expected_product_ids": ["RUG-167"], "expected_top_k": 5, "fit_space": {"width": 240.2, "height": 57.0, "depth": 397.8}}
+{"id": "Q050", "type": "fit", "question": "Does TABLE-192 fit in a room 241.3x125.9 cm with height 103.8 cm?", "expected_product_ids": ["TABLE-192"], "expected_top_k": 5, "fit_space": {"width": 241.3, "height": 103.8, "depth": 125.9}}
+{"id": "Q051", "type": "compare", "question": "Compare DESK-180 and DESK-060.", "expected_product_ids": ["DESK-180", "DESK-060"], "expected_top_k": 5}
+{"id": "Q052", "type": "compare", "question": "Compare DECOR-125 and DECOR-019.", "expected_product_ids": ["DECOR-125", "DECOR-019"], "expected_top_k": 5}
+{"id": "Q053", "type": "compare", "question": "Compare DECOR-070 and DECOR-106.", "expected_product_ids": ["DECOR-070", "DECOR-106"], "expected_top_k": 5}
+{"id": "Q054", "type": "compare", "question": "Compare SHELF-242 and SHELF-116.", "expected_product_ids": ["SHELF-242", "SHELF-116"], "expected_top_k": 5}
+{"id": "Q055", "type": "compare", "question": "Compare TABLE-034 and TABLE-060.", "expected_product_ids": ["TABLE-034", "TABLE-060"], "expected_top_k": 5}
+{"id": "Q056", "type": "compare", "question": "Compare BED-136 and BED-029.", "expected_product_ids": ["BED-136", "BED-029"], "expected_top_k": 5}
+{"id": "Q057", "type": "compare", "question": "Compare BED-084 and BED-128.", "expected_product_ids": ["BED-084", "BED-128"], "expected_top_k": 5}
+{"id": "Q058", "type": "compare", "question": "Compare SHELF-233 and SHELF-002.", "expected_product_ids": ["SHELF-233", "SHELF-002"], "expected_top_k": 5}
+{"id": "Q059", "type": "compare", "question": "Compare CHAIR-208 and CHAIR-207.", "expected_product_ids": ["CHAIR-208", "CHAIR-207"], "expected_top_k": 5}
+{"id": "Q060", "type": "compare", "question": "Compare LAMP-148 and LAMP-247.", "expected_product_ids": ["LAMP-148", "LAMP-247"], "expected_top_k": 5}

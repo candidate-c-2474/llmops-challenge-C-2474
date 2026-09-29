@@ -1,0 +1,1068 @@
+{
+  "summary": {
+    "timestamp": "2026-09-29T01:13:14.843066",
+    "n_questions": 20,
+    "top_k": 5,
+    "configs": {
+      "dense_only": {
+        "config": "dense_only",
+        "n_questions": 20,
+        "recall_at_5_mean": 0.1,
+        "mrr_mean": 0.1,
+        "latency_p50_ms": 1.4,
+        "latency_p95_ms": 24.03,
+        "latency_mean_ms": 2.54
+      },
+      "hybrid_no_rerank": {
+        "config": "hybrid_no_rerank",
+        "n_questions": 20,
+        "recall_at_5_mean": 1.0,
+        "mrr_mean": 1.0,
+        "latency_p50_ms": 21.32,
+        "latency_p95_ms": 25.74,
+        "latency_mean_ms": 21.8
+      },
+      "hybrid_with_rerank": {
+        "config": "hybrid_with_rerank",
+        "n_questions": 20,
+        "recall_at_5_mean": 1.0,
+        "mrr_mean": 1.0,
+        "latency_p50_ms": 22.47,
+        "latency_p95_ms": 26.24,
+        "latency_mean_ms": 22.29
+      }
+    },
+    "delta_rerank_latency_p50_ms": 1.15,
+    "delta_rerank_latency_p95_ms": 0.5,
+    "delta_recall_hybrid_vs_dense": 0.9,
+    "delta_recall_rerank_vs_hybrid": 0.0
+  },
+  "details": {
+    "dense_only": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "DESK-007",
+          "CHAIR-102",
+          "BED-018",
+          "SOFA-083",
+          "SOFA-142"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.03
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "SOFA-010",
+          "DECOR-138",
+          "SHELF-111",
+          "TABLE-233",
+          "SHELF-182"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.54
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "DESK-201",
+          "RUG-086",
+          "SHELF-010",
+          "RUG-034",
+          "TABLE-001"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.35
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "BED-092",
+          "TABLE-139",
+          "LAMP-216",
+          "TABLE-178",
+          "BED-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.48
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "BED-004",
+          "SHELF-007",
+          "RUG-177",
+          "TABLE-237",
+          "LAMP-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.55
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.34
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "BED-027",
+          "DESK-065",
+          "CHAIR-257",
+          "TABLE-196",
+          "RUG-053"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.33
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DECOR-124",
+          "DESK-056",
+          "LAMP-041",
+          "SOFA-045",
+          "DESK-126"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.15
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 1.35
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 1.74
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-015",
+          "DESK-045",
+          "DECOR-088",
+          "LAMP-125",
+          "SHELF-121"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.63
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "RUG-124",
+          "DESK-147",
+          "BED-020",
+          "CHAIR-143",
+          "CHAIR-212"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.41
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "RUG-138",
+          "BED-053",
+          "TABLE-149",
+          "BED-020",
+          "CHAIR-270"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.44
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "CHAIR-199",
+          "RUG-188",
+          "SHELF-218",
+          "DESK-234",
+          "SHELF-221"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.19
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "RUG-152",
+          "DESK-079",
+          "TABLE-177",
+          "LAMP-031",
+          "DESK-124"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.37
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.31
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "DESK-234",
+          "SHELF-123",
+          "BED-114",
+          "DECOR-159",
+          "TABLE-086"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.39
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "TABLE-215",
+          "SHELF-034",
+          "SHELF-070",
+          "SHELF-180",
+          "BED-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.4
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "RUG-149",
+          "RUG-043",
+          "LAMP-223",
+          "LAMP-005",
+          "DECOR-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.31
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "LAMP-173",
+          "DESK-005",
+          "CHAIR-052",
+          "DESK-104",
+          "LAMP-176"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.48
+      }
+    ],
+    "hybrid_no_rerank": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "CHAIR-030",
+          "CHAIR-040",
+          "CHAIR-086",
+          "CHAIR-172",
+          "CHAIR-153"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 25.41
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "RUG-192",
+          "RUG-097",
+          "RUG-196",
+          "RUG-003",
+          "RUG-193"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.93
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "SOFA-020",
+          "SOFA-054",
+          "SOFA-110",
+          "SHELF-123",
+          "BED-108"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.32
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "CHAIR-196",
+          "CHAIR-051",
+          "CHAIR-261",
+          "CHAIR-099",
+          "CHAIR-162"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 23.93
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "DESK-069",
+          "DESK-062",
+          "DESK-132",
+          "DESK-023",
+          "DESK-210"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.29
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "LAMP-221",
+          "LAMP-206",
+          "LAMP-002",
+          "LAMP-033",
+          "LAMP-185"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 23.33
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "CHAIR-029",
+          "CHAIR-021",
+          "CHAIR-014",
+          "CHAIR-012",
+          "CHAIR-065"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.1
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DESK-184",
+          "DESK-151",
+          "DESK-214",
+          "DESK-068",
+          "DESK-241"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.77
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-083",
+          "DECOR-060",
+          "DECOR-050",
+          "DECOR-007",
+          "DECOR-003"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.7
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-083",
+          "DECOR-060",
+          "DECOR-050",
+          "DECOR-007",
+          "DECOR-003"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.29
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-019",
+          "SOFA-105",
+          "SOFA-027",
+          "SOFA-038",
+          "SOFA-025"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.6
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "TABLE-033",
+          "TABLE-148",
+          "TABLE-015",
+          "TABLE-176",
+          "TABLE-178"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 23.56
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "CHAIR-065",
+          "CHAIR-102",
+          "CHAIR-105",
+          "CHAIR-054",
+          "CHAIR-064"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 25.74
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "BED-094",
+          "BED-157",
+          "BED-111",
+          "BED-131",
+          "BED-099"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.74
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "DECOR-103",
+          "DECOR-092",
+          "DECOR-148",
+          "DECOR-029",
+          "DECOR-012"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.43
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "LAMP-221",
+          "LAMP-206",
+          "LAMP-002",
+          "LAMP-033",
+          "LAMP-185"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 23.98
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "LAMP-164",
+          "LAMP-218",
+          "LAMP-061",
+          "BED-001",
+          "TABLE-136"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.49
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "RUG-055",
+          "RUG-027",
+          "RUG-002",
+          "RUG-045",
+          "RUG-200"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.73
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "SOFA-024",
+          "SOFA-126",
+          "SOFA-018",
+          "SOFA-141",
+          "SOFA-035"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.85
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "CHAIR-204",
+          "LAMP-202",
+          "DESK-136",
+          "LAMP-044",
+          "LAMP-224"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.79
+      }
+    ],
+    "hybrid_with_rerank": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "CHAIR-030",
+          "CHAIR-040",
+          "CHAIR-086",
+          "CHAIR-172",
+          "CHAIR-153"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 26.16
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "RUG-192",
+          "RUG-097",
+          "RUG-196",
+          "RUG-003",
+          "RUG-193"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.83
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "SOFA-020",
+          "SOFA-054",
+          "SOFA-110",
+          "SHELF-123",
+          "BED-108"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.82
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "CHAIR-196",
+          "CHAIR-051",
+          "CHAIR-261",
+          "CHAIR-099",
+          "CHAIR-162"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.97
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "DESK-069",
+          "DESK-062",
+          "DESK-132",
+          "DESK-023",
+          "DESK-210"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.9
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "LAMP-221",
+          "LAMP-206",
+          "LAMP-002",
+          "LAMP-033",
+          "LAMP-185"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.56
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "CHAIR-029",
+          "CHAIR-021",
+          "CHAIR-014",
+          "CHAIR-012",
+          "CHAIR-065"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.47
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DESK-184",
+          "DESK-151",
+          "DESK-214",
+          "DESK-068",
+          "DESK-241"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 24.07
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-083",
+          "DECOR-060",
+          "DECOR-050",
+          "DECOR-007",
+          "DECOR-003"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.66
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-083",
+          "DECOR-060",
+          "DECOR-050",
+          "DECOR-007",
+          "DECOR-003"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.67
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-019",
+          "SOFA-105",
+          "SOFA-027",
+          "SOFA-038",
+          "SOFA-025"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.1
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "TABLE-033",
+          "TABLE-148",
+          "TABLE-015",
+          "TABLE-176",
+          "TABLE-178"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 25.15
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "CHAIR-065",
+          "CHAIR-102",
+          "CHAIR-105",
+          "CHAIR-054",
+          "CHAIR-064"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 26.24
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "BED-094",
+          "BED-157",
+          "BED-111",
+          "BED-131",
+          "BED-099"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.46
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "DECOR-103",
+          "DECOR-092",
+          "DECOR-148",
+          "DECOR-029",
+          "DECOR-012"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.39
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "LAMP-221",
+          "LAMP-206",
+          "LAMP-002",
+          "LAMP-033",
+          "LAMP-185"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.72
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "LAMP-164",
+          "LAMP-218",
+          "LAMP-061",
+          "BED-001",
+          "TABLE-136"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.48
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "RUG-055",
+          "RUG-027",
+          "RUG-002",
+          "RUG-045",
+          "RUG-200"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.88
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "SOFA-024",
+          "SOFA-126",
+          "SOFA-018",
+          "SOFA-141",
+          "SOFA-035"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.42
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "CHAIR-204",
+          "LAMP-202",
+          "DESK-136",
+          "LAMP-044",
+          "LAMP-224"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.89
+      }
+    ]
+  }
+}

@@ -324,3 +324,57 @@ dependencies and remove the wheelhouse mount and `PYTHONPATH` line.
 
 **Status:** **DEPLOYED** (offline mode).
 
+
+---
+
+## ADR-012: Offline-Safe Dense Retriever and Reranker Fallbacks
+
+**Decision:** The `DenseRetriever` and `CrossEncoderReranker` degrade
+gracefully when their HF models are not cached and the network is offline.
+The `HybridRetrievalPipeline` excludes hash-fallback dense retrievers from
+the RRF fusion to prevent noise from dominating the ranking.
+
+**Options considered:**
+- Fail hard when the embedder is unavailable — rejected (would break the
+  end-to-end pipeline in offline environments).
+- Fall back to a deterministic hash-based encoder — **chosen for dense**.
+- Have the reranker return the input ordering unchanged — **chosen for
+  rerank**.
+- Exclude the hash-fallback dense from the fusion — **chosen** (see below).
+- Ship a pre-computed embedding file — rejected (binary artifact in a
+  source repo; doesn't address the query-time embedding problem).
+
+**Rationale:**
+
+1. **Dense fallback.** `scripts/seed_catalog.py` generates deterministic
+   product embeddings via a seeded hash of the product text. For queries to
+   be comparable in the same vector space, `DenseRetriever` uses the same
+   hash function. The result is reproducible but semantically blind.
+   Measured Recall@5 for dense-only retrieval on this catalog: **0.10**
+   (see `docs/BENCHMARKS.md` Section 4).
+
+2. **Reranker fallback.** `CrossEncoderReranker` catches load failures and
+   returns the input ordering unchanged. The BM25+RRF result is preserved.
+   Measured delta: **+0.00 Recall, +1.15 ms p50 latency**.
+
+3. **RRF filter.** The naive hybrid approach mixes BM25 (strong lexical
+   signal) with hash-fallback dense (near-random). The RRF fusion, weighted
+   0.4 BM25 / 0.6 dense by config, would then be dominated by noise —
+   measured Recall@5 dropped to **0.075** with naive fusion. Excluding the
+   hash-fallback dense retriever from the fusion raised hybrid Recall@5 to
+   **1.00**.
+
+**Trade-offs:**
+- The fallback chain means that a networked deployment would silently use
+  the semantic embedder, while an offline deployment uses the hash
+  embedder, with no code change. This is by design (drop-in replacement).
+- The `encoder_mode` property on `DenseRetriever` is intentionally
+  observable so operators can inspect which mode is active.
+
+**Production guidance:** On a networked builder, the Dockerfile would
+download `all-MiniLM-L6-v2` and `ms-marco-MiniLM-L6-v2` into the image
+cache, activating semantic mode automatically. The fallback chain would
+remain in place as a defensive measure.
+
+**Status:** **DEPLOYED** (fallback chain); **MEASURED** (impact documented
+in BENCHMARKS.md Section 4).

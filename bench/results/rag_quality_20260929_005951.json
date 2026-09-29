@@ -1,0 +1,3138 @@
+{
+  "summary": {
+    "timestamp": "2026-09-29T00:59:51.783968",
+    "n_questions": 60,
+    "top_k": 5,
+    "configs": {
+      "dense_only": {
+        "config": "dense_only",
+        "n_questions": 60,
+        "recall_at_5_mean": 0.0417,
+        "mrr_mean": 0.0417,
+        "latency_p50_ms": 1.37,
+        "latency_p95_ms": 1.98,
+        "latency_mean_ms": 1.75
+      },
+      "hybrid_no_rerank": {
+        "config": "hybrid_no_rerank",
+        "n_questions": 60,
+        "recall_at_5_mean": 0.075,
+        "mrr_mean": 0.075,
+        "latency_p50_ms": 22.61,
+        "latency_p95_ms": 37.56,
+        "latency_mean_ms": 25.64
+      },
+      "hybrid_with_rerank": {
+        "config": "hybrid_with_rerank",
+        "n_questions": 60,
+        "recall_at_5_mean": 0.075,
+        "mrr_mean": 0.075,
+        "latency_p50_ms": 22.76,
+        "latency_p95_ms": 38.85,
+        "latency_mean_ms": 26.03
+      }
+    },
+    "delta_rerank_latency_p50_ms": 0.15,
+    "delta_rerank_latency_p95_ms": 1.29,
+    "delta_recall_hybrid_vs_dense": 0.0333,
+    "delta_recall_rerank_vs_hybrid": 0.0
+  },
+  "details": {
+    "dense_only": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "DESK-007",
+          "CHAIR-102",
+          "BED-018",
+          "SOFA-083",
+          "SOFA-142"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.42
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "SOFA-010",
+          "DECOR-138",
+          "SHELF-111",
+          "TABLE-233",
+          "SHELF-182"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.5
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "DESK-201",
+          "RUG-086",
+          "SHELF-010",
+          "RUG-034",
+          "TABLE-001"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.53
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "BED-092",
+          "TABLE-139",
+          "LAMP-216",
+          "TABLE-178",
+          "BED-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.63
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "BED-004",
+          "SHELF-007",
+          "RUG-177",
+          "TABLE-237",
+          "LAMP-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.41
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.41
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "BED-027",
+          "DESK-065",
+          "CHAIR-257",
+          "TABLE-196",
+          "RUG-053"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.68
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DECOR-124",
+          "DESK-056",
+          "LAMP-041",
+          "SOFA-045",
+          "DESK-126"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.34
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 1.57
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 1.38
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-015",
+          "DESK-045",
+          "DECOR-088",
+          "LAMP-125",
+          "SHELF-121"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.2
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "RUG-124",
+          "DESK-147",
+          "BED-020",
+          "CHAIR-143",
+          "CHAIR-212"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.19
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "RUG-138",
+          "BED-053",
+          "TABLE-149",
+          "BED-020",
+          "CHAIR-270"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.29
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "CHAIR-199",
+          "RUG-188",
+          "SHELF-218",
+          "DESK-234",
+          "SHELF-221"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.47
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "RUG-152",
+          "DESK-079",
+          "TABLE-177",
+          "LAMP-031",
+          "DESK-124"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.46
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.28
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "DESK-234",
+          "SHELF-123",
+          "BED-114",
+          "DECOR-159",
+          "TABLE-086"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.31
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "TABLE-215",
+          "SHELF-034",
+          "SHELF-070",
+          "SHELF-180",
+          "BED-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.44
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "RUG-149",
+          "RUG-043",
+          "LAMP-223",
+          "LAMP-005",
+          "DECOR-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.43
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "LAMP-173",
+          "DESK-005",
+          "CHAIR-052",
+          "DESK-104",
+          "LAMP-176"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.45
+      },
+      {
+        "question_id": "Q021",
+        "query": "What is the price of LAMP-181?",
+        "expected": [
+          "LAMP-181"
+        ],
+        "retrieved_top5": [
+          "LAMP-020",
+          "CHAIR-079",
+          "CHAIR-236",
+          "DECOR-152",
+          "BED-181"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 2.07
+      },
+      {
+        "question_id": "Q022",
+        "query": "Is DECOR-105 in stock?",
+        "expected": [
+          "DECOR-105"
+        ],
+        "retrieved_top5": [
+          "RUG-113",
+          "DECOR-045",
+          "DECOR-182",
+          "DESK-021",
+          "BED-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.68
+      },
+      {
+        "question_id": "Q023",
+        "query": "What is the price of SHELF-231?",
+        "expected": [
+          "SHELF-231"
+        ],
+        "retrieved_top5": [
+          "BED-028",
+          "SHELF-027",
+          "SHELF-039",
+          "CHAIR-246",
+          "DECOR-159"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.16
+      },
+      {
+        "question_id": "Q024",
+        "query": "Is CHAIR-283 in stock?",
+        "expected": [
+          "CHAIR-283"
+        ],
+        "retrieved_top5": [
+          "TABLE-092",
+          "BED-130",
+          "DESK-183",
+          "SHELF-234",
+          "LAMP-221"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.17
+      },
+      {
+        "question_id": "Q025",
+        "query": "What is the price of TABLE-066?",
+        "expected": [
+          "TABLE-066"
+        ],
+        "retrieved_top5": [
+          "TABLE-116",
+          "BED-001",
+          "SHELF-063",
+          "DESK-170",
+          "LAMP-125"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q026",
+        "query": "What are the dimensions of DESK-178?",
+        "expected": [
+          "DESK-178"
+        ],
+        "retrieved_top5": [
+          "RUG-167",
+          "SHELF-146",
+          "SHELF-096",
+          "DESK-235",
+          "CHAIR-250"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.34
+      },
+      {
+        "question_id": "Q027",
+        "query": "What are the dimensions of RUG-138?",
+        "expected": [
+          "RUG-138"
+        ],
+        "retrieved_top5": [
+          "TABLE-210",
+          "DECOR-135",
+          "DECOR-133",
+          "CHAIR-057",
+          "BED-055"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.28
+      },
+      {
+        "question_id": "Q028",
+        "query": "What are the dimensions of DESK-155?",
+        "expected": [
+          "DESK-155"
+        ],
+        "retrieved_top5": [
+          "TABLE-208",
+          "TABLE-144",
+          "LAMP-052",
+          "SHELF-054",
+          "BED-196"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.18
+      },
+      {
+        "question_id": "Q029",
+        "query": "Is BED-147 in stock?",
+        "expected": [
+          "BED-147"
+        ],
+        "retrieved_top5": [
+          "LAMP-008",
+          "SOFA-102",
+          "CHAIR-057",
+          "LAMP-019",
+          "SOFA-146"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.4
+      },
+      {
+        "question_id": "Q030",
+        "query": "What are the dimensions of DECOR-079?",
+        "expected": [
+          "DECOR-079"
+        ],
+        "retrieved_top5": [
+          "BED-169",
+          "DESK-054",
+          "CHAIR-197",
+          "SHELF-076",
+          "SHELF-141"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.28
+      },
+      {
+        "question_id": "Q031",
+        "query": "What are the dimensions of DECOR-009?",
+        "expected": [
+          "DECOR-009"
+        ],
+        "retrieved_top5": [
+          "DECOR-191",
+          "RUG-029",
+          "SHELF-142",
+          "DECOR-160",
+          "DESK-208"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.35
+      },
+      {
+        "question_id": "Q032",
+        "query": "What is the price of SHELF-067?",
+        "expected": [
+          "SHELF-067"
+        ],
+        "retrieved_top5": [
+          "DECOR-192",
+          "SHELF-110",
+          "LAMP-158",
+          "RUG-100",
+          "DECOR-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.32
+      },
+      {
+        "question_id": "Q033",
+        "query": "Is DECOR-131 in stock?",
+        "expected": [
+          "DECOR-131"
+        ],
+        "retrieved_top5": [
+          "SOFA-080",
+          "SHELF-153",
+          "LAMP-114",
+          "TABLE-156",
+          "DESK-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.39
+      },
+      {
+        "question_id": "Q034",
+        "query": "What are the dimensions of LAMP-017?",
+        "expected": [
+          "LAMP-017"
+        ],
+        "retrieved_top5": [
+          "SOFA-104",
+          "TABLE-083",
+          "TABLE-163",
+          "TABLE-002",
+          "CHAIR-065"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.44
+      },
+      {
+        "question_id": "Q035",
+        "query": "Is DESK-179 in stock?",
+        "expected": [
+          "DESK-179"
+        ],
+        "retrieved_top5": [
+          "SOFA-133",
+          "SHELF-116",
+          "CHAIR-161",
+          "TABLE-194",
+          "RUG-139"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q036",
+        "query": "Does SHELF-095 fit in a room 153.0x107.2 cm with height 236.4 cm?",
+        "expected": [
+          "SHELF-095"
+        ],
+        "retrieved_top5": [
+          "BED-179",
+          "TABLE-226",
+          "BED-113",
+          "SHELF-047",
+          "TABLE-199"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.33
+      },
+      {
+        "question_id": "Q037",
+        "query": "Does TABLE-204 fit in a room 224.0x126.2 cm with height 66.9 cm?",
+        "expected": [
+          "TABLE-204"
+        ],
+        "retrieved_top5": [
+          "DESK-016",
+          "DECOR-189",
+          "TABLE-234",
+          "BED-002",
+          "TABLE-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.39
+      },
+      {
+        "question_id": "Q038",
+        "query": "Does CHAIR-207 fit in a room 104.1x83.8 cm with height 91.3 cm?",
+        "expected": [
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "RUG-042",
+          "SOFA-001",
+          "CHAIR-091",
+          "BED-200",
+          "SHELF-215"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.44
+      },
+      {
+        "question_id": "Q039",
+        "query": "Does DESK-243 fit in a room 225.4x111.4 cm with height 128.0 cm?",
+        "expected": [
+          "DESK-243"
+        ],
+        "retrieved_top5": [
+          "LAMP-087",
+          "DESK-027",
+          "SHELF-050",
+          "SHELF-123",
+          "DECOR-198"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q040",
+        "query": "Does DECOR-092 fit in a room 52.6x71.5 cm with height 75.6 cm?",
+        "expected": [
+          "DECOR-092"
+        ],
+        "retrieved_top5": [
+          "SHELF-167",
+          "CHAIR-149",
+          "SHELF-134",
+          "TABLE-117",
+          "SOFA-087"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.37
+      },
+      {
+        "question_id": "Q041",
+        "query": "Does DESK-023 fit in a room 148.2x111.0 cm with height 96.0 cm?",
+        "expected": [
+          "DESK-023"
+        ],
+        "retrieved_top5": [
+          "DESK-021",
+          "DECOR-078",
+          "SOFA-046",
+          "BED-031",
+          "DESK-029"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.59
+      },
+      {
+        "question_id": "Q042",
+        "query": "Does TABLE-165 fit in a room 146.9x98.8 cm with height 103.0 cm?",
+        "expected": [
+          "TABLE-165"
+        ],
+        "retrieved_top5": [
+          "TABLE-076",
+          "RUG-115",
+          "LAMP-228",
+          "CHAIR-037",
+          "DESK-050"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q043",
+        "query": "Does SHELF-240 fit in a room 145.3x64.6 cm with height 147.3 cm?",
+        "expected": [
+          "SHELF-240"
+        ],
+        "retrieved_top5": [
+          "CHAIR-079",
+          "CHAIR-254",
+          "DESK-063",
+          "CHAIR-002",
+          "SHELF-019"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q044",
+        "query": "Does DECOR-129 fit in a room 116.0x30.4 cm with height 132.3 cm?",
+        "expected": [
+          "DECOR-129"
+        ],
+        "retrieved_top5": [
+          "DECOR-156",
+          "CHAIR-136",
+          "SHELF-164",
+          "BED-095",
+          "LAMP-138"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.35
+      },
+      {
+        "question_id": "Q045",
+        "query": "Does BED-152 fit in a room 165.0x247.1 cm with height 84.5 cm?",
+        "expected": [
+          "BED-152"
+        ],
+        "retrieved_top5": [
+          "BED-012",
+          "CHAIR-124",
+          "BED-098",
+          "SHELF-230",
+          "LAMP-004"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.98
+      },
+      {
+        "question_id": "Q046",
+        "query": "Does BED-029 fit in a room 131.5x263.9 cm with height 78.8 cm?",
+        "expected": [
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-235",
+          "RUG-149",
+          "SHELF-021",
+          "DESK-066",
+          "SHELF-152"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.51
+      },
+      {
+        "question_id": "Q047",
+        "query": "Does RUG-193 fit in a room 252.9x504.9 cm with height 25.5 cm?",
+        "expected": [
+          "RUG-193"
+        ],
+        "retrieved_top5": [
+          "CHAIR-150",
+          "TABLE-200",
+          "SOFA-149",
+          "BED-176",
+          "TABLE-049"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.25
+      },
+      {
+        "question_id": "Q048",
+        "query": "Does CHAIR-293 fit in a room 74.2x102.0 cm with height 122.8 cm?",
+        "expected": [
+          "CHAIR-293"
+        ],
+        "retrieved_top5": [
+          "LAMP-091",
+          "TABLE-004",
+          "TABLE-215",
+          "TABLE-188",
+          "TABLE-014"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.89
+      },
+      {
+        "question_id": "Q049",
+        "query": "Does RUG-167 fit in a room 240.2x397.8 cm with height 57.0 cm?",
+        "expected": [
+          "RUG-167"
+        ],
+        "retrieved_top5": [
+          "CHAIR-093",
+          "DECOR-107",
+          "CHAIR-151",
+          "LAMP-099",
+          "BED-068"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.6
+      },
+      {
+        "question_id": "Q050",
+        "query": "Does TABLE-192 fit in a room 241.3x125.9 cm with height 103.8 cm?",
+        "expected": [
+          "TABLE-192"
+        ],
+        "retrieved_top5": [
+          "DECOR-082",
+          "TABLE-216",
+          "DESK-221",
+          "LAMP-032",
+          "DESK-243"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.23
+      },
+      {
+        "question_id": "Q051",
+        "query": "Compare DESK-180 and DESK-060.",
+        "expected": [
+          "DESK-180",
+          "DESK-060"
+        ],
+        "retrieved_top5": [
+          "SHELF-052",
+          "BED-127",
+          "DESK-179",
+          "DECOR-081",
+          "SHELF-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.44
+      },
+      {
+        "question_id": "Q052",
+        "query": "Compare DECOR-125 and DECOR-019.",
+        "expected": [
+          "DECOR-125",
+          "DECOR-019"
+        ],
+        "retrieved_top5": [
+          "TABLE-140",
+          "RUG-127",
+          "BED-019",
+          "DESK-014",
+          "DESK-070"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.26
+      },
+      {
+        "question_id": "Q053",
+        "query": "Compare DECOR-070 and DECOR-106.",
+        "expected": [
+          "DECOR-070",
+          "DECOR-106"
+        ],
+        "retrieved_top5": [
+          "TABLE-049",
+          "BED-107",
+          "CHAIR-238",
+          "DECOR-043",
+          "TABLE-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.31
+      },
+      {
+        "question_id": "Q054",
+        "query": "Compare SHELF-242 and SHELF-116.",
+        "expected": [
+          "SHELF-242",
+          "SHELF-116"
+        ],
+        "retrieved_top5": [
+          "TABLE-003",
+          "SHELF-242",
+          "CHAIR-293",
+          "LAMP-055",
+          "DESK-145"
+        ],
+        "recall": 0.5,
+        "rr": 0.5,
+        "latency_ms": 1.46
+      },
+      {
+        "question_id": "Q055",
+        "query": "Compare TABLE-034 and TABLE-060.",
+        "expected": [
+          "TABLE-034",
+          "TABLE-060"
+        ],
+        "retrieved_top5": [
+          "TABLE-014",
+          "CHAIR-245",
+          "TABLE-167",
+          "SOFA-126",
+          "TABLE-011"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.32
+      },
+      {
+        "question_id": "Q056",
+        "query": "Compare BED-136 and BED-029.",
+        "expected": [
+          "BED-136",
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-032",
+          "RUG-086",
+          "LAMP-102",
+          "CHAIR-117",
+          "LAMP-135"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.32
+      },
+      {
+        "question_id": "Q057",
+        "query": "Compare BED-084 and BED-128.",
+        "expected": [
+          "BED-084",
+          "BED-128"
+        ],
+        "retrieved_top5": [
+          "DESK-196",
+          "CHAIR-179",
+          "BED-173",
+          "TABLE-239",
+          "RUG-035"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.29
+      },
+      {
+        "question_id": "Q058",
+        "query": "Compare SHELF-233 and SHELF-002.",
+        "expected": [
+          "SHELF-233",
+          "SHELF-002"
+        ],
+        "retrieved_top5": [
+          "DESK-182",
+          "BED-115",
+          "LAMP-242",
+          "LAMP-059",
+          "TABLE-101"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.31
+      },
+      {
+        "question_id": "Q059",
+        "query": "Compare CHAIR-208 and CHAIR-207.",
+        "expected": [
+          "CHAIR-208",
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "DECOR-077",
+          "SHELF-003",
+          "SOFA-022",
+          "BED-117",
+          "DESK-123"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.42
+      },
+      {
+        "question_id": "Q060",
+        "query": "Compare LAMP-148 and LAMP-247.",
+        "expected": [
+          "LAMP-148",
+          "LAMP-247"
+        ],
+        "retrieved_top5": [
+          "BED-031",
+          "DESK-123",
+          "CHAIR-178",
+          "CHAIR-258",
+          "SOFA-119"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 1.28
+      }
+    ],
+    "hybrid_no_rerank": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "DESK-007",
+          "CHAIR-102",
+          "BED-018",
+          "SOFA-083",
+          "SOFA-142"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 25.57
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "SOFA-010",
+          "DECOR-138",
+          "SHELF-111",
+          "TABLE-233",
+          "SHELF-182"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.61
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "DESK-201",
+          "RUG-086",
+          "SHELF-010",
+          "RUG-034",
+          "TABLE-001"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.23
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "BED-092",
+          "TABLE-139",
+          "LAMP-216",
+          "TABLE-178",
+          "BED-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.61
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "BED-004",
+          "SHELF-007",
+          "RUG-177",
+          "TABLE-237",
+          "LAMP-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.82
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.56
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "BED-027",
+          "DESK-065",
+          "CHAIR-257",
+          "TABLE-196",
+          "RUG-053"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.29
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DESK-222",
+          "DECOR-124",
+          "DESK-056",
+          "LAMP-041",
+          "SOFA-045"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 22.81
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 20.08
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.73
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-015",
+          "DESK-045",
+          "DECOR-088",
+          "LAMP-125",
+          "SHELF-121"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.51
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "RUG-124",
+          "DESK-147",
+          "BED-020",
+          "CHAIR-143",
+          "CHAIR-212"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.29
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "RUG-138",
+          "BED-053",
+          "TABLE-149",
+          "BED-020",
+          "CHAIR-270"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.72
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "BED-173",
+          "CHAIR-199",
+          "RUG-188",
+          "SHELF-218",
+          "DESK-234"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.25
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "RUG-152",
+          "DESK-079",
+          "TABLE-177",
+          "LAMP-031",
+          "DESK-124"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.59
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.6
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "DESK-234",
+          "SHELF-123",
+          "BED-114",
+          "DECOR-159",
+          "TABLE-086"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.8
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "TABLE-215",
+          "SHELF-034",
+          "SHELF-070",
+          "SHELF-180",
+          "BED-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.37
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "RUG-149",
+          "RUG-043",
+          "LAMP-223",
+          "LAMP-005",
+          "DECOR-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.97
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "LAMP-173",
+          "DESK-005",
+          "CHAIR-052",
+          "DESK-104",
+          "LAMP-176"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.29
+      },
+      {
+        "question_id": "Q021",
+        "query": "What is the price of LAMP-181?",
+        "expected": [
+          "LAMP-181"
+        ],
+        "retrieved_top5": [
+          "LAMP-020",
+          "CHAIR-079",
+          "CHAIR-236",
+          "DECOR-152",
+          "BED-181"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.75
+      },
+      {
+        "question_id": "Q022",
+        "query": "Is DECOR-105 in stock?",
+        "expected": [
+          "DECOR-105"
+        ],
+        "retrieved_top5": [
+          "DECOR-045",
+          "RUG-113",
+          "DECOR-182",
+          "DESK-021",
+          "BED-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.6
+      },
+      {
+        "question_id": "Q023",
+        "query": "What is the price of SHELF-231?",
+        "expected": [
+          "SHELF-231"
+        ],
+        "retrieved_top5": [
+          "BED-028",
+          "SHELF-027",
+          "SHELF-039",
+          "CHAIR-246",
+          "DECOR-159"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.72
+      },
+      {
+        "question_id": "Q024",
+        "query": "Is CHAIR-283 in stock?",
+        "expected": [
+          "CHAIR-283"
+        ],
+        "retrieved_top5": [
+          "TABLE-092",
+          "BED-130",
+          "DESK-183",
+          "SHELF-234",
+          "LAMP-221"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.62
+      },
+      {
+        "question_id": "Q025",
+        "query": "What is the price of TABLE-066?",
+        "expected": [
+          "TABLE-066"
+        ],
+        "retrieved_top5": [
+          "TABLE-116",
+          "BED-001",
+          "SHELF-063",
+          "DESK-170",
+          "LAMP-125"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.17
+      },
+      {
+        "question_id": "Q026",
+        "query": "What are the dimensions of DESK-178?",
+        "expected": [
+          "DESK-178"
+        ],
+        "retrieved_top5": [
+          "RUG-167",
+          "SHELF-146",
+          "SHELF-096",
+          "DESK-235",
+          "CHAIR-250"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.83
+      },
+      {
+        "question_id": "Q027",
+        "query": "What are the dimensions of RUG-138?",
+        "expected": [
+          "RUG-138"
+        ],
+        "retrieved_top5": [
+          "TABLE-210",
+          "DECOR-135",
+          "DECOR-133",
+          "CHAIR-057",
+          "BED-055"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.97
+      },
+      {
+        "question_id": "Q028",
+        "query": "What are the dimensions of DESK-155?",
+        "expected": [
+          "DESK-155"
+        ],
+        "retrieved_top5": [
+          "TABLE-208",
+          "TABLE-144",
+          "LAMP-052",
+          "SHELF-054",
+          "BED-196"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.33
+      },
+      {
+        "question_id": "Q029",
+        "query": "Is BED-147 in stock?",
+        "expected": [
+          "BED-147"
+        ],
+        "retrieved_top5": [
+          "LAMP-008",
+          "SOFA-102",
+          "CHAIR-057",
+          "LAMP-019",
+          "SOFA-146"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.13
+      },
+      {
+        "question_id": "Q030",
+        "query": "What are the dimensions of DECOR-079?",
+        "expected": [
+          "DECOR-079"
+        ],
+        "retrieved_top5": [
+          "BED-169",
+          "DESK-054",
+          "CHAIR-197",
+          "SHELF-076",
+          "SHELF-141"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.96
+      },
+      {
+        "question_id": "Q031",
+        "query": "What are the dimensions of DECOR-009?",
+        "expected": [
+          "DECOR-009"
+        ],
+        "retrieved_top5": [
+          "DECOR-191",
+          "RUG-029",
+          "SHELF-142",
+          "DECOR-160",
+          "DESK-208"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.99
+      },
+      {
+        "question_id": "Q032",
+        "query": "What is the price of SHELF-067?",
+        "expected": [
+          "SHELF-067"
+        ],
+        "retrieved_top5": [
+          "DECOR-192",
+          "SHELF-110",
+          "LAMP-158",
+          "RUG-100",
+          "DECOR-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.03
+      },
+      {
+        "question_id": "Q033",
+        "query": "Is DECOR-131 in stock?",
+        "expected": [
+          "DECOR-131"
+        ],
+        "retrieved_top5": [
+          "SOFA-080",
+          "SHELF-153",
+          "LAMP-114",
+          "TABLE-156",
+          "DESK-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.3
+      },
+      {
+        "question_id": "Q034",
+        "query": "What are the dimensions of LAMP-017?",
+        "expected": [
+          "LAMP-017"
+        ],
+        "retrieved_top5": [
+          "SOFA-104",
+          "TABLE-083",
+          "TABLE-163",
+          "TABLE-002",
+          "CHAIR-065"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.16
+      },
+      {
+        "question_id": "Q035",
+        "query": "Is DESK-179 in stock?",
+        "expected": [
+          "DESK-179"
+        ],
+        "retrieved_top5": [
+          "DESK-135",
+          "SOFA-133",
+          "SHELF-116",
+          "CHAIR-161",
+          "TABLE-194"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.38
+      },
+      {
+        "question_id": "Q036",
+        "query": "Does SHELF-095 fit in a room 153.0x107.2 cm with height 236.4 cm?",
+        "expected": [
+          "SHELF-095"
+        ],
+        "retrieved_top5": [
+          "SHELF-078",
+          "BED-179",
+          "TABLE-226",
+          "BED-113",
+          "SHELF-047"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 34.87
+      },
+      {
+        "question_id": "Q037",
+        "query": "Does TABLE-204 fit in a room 224.0x126.2 cm with height 66.9 cm?",
+        "expected": [
+          "TABLE-204"
+        ],
+        "retrieved_top5": [
+          "DESK-016",
+          "DECOR-189",
+          "TABLE-234",
+          "BED-002",
+          "TABLE-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 36.85
+      },
+      {
+        "question_id": "Q038",
+        "query": "Does CHAIR-207 fit in a room 104.1x83.8 cm with height 91.3 cm?",
+        "expected": [
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "RUG-042",
+          "SOFA-001",
+          "CHAIR-091",
+          "BED-200",
+          "SHELF-215"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 34.3
+      },
+      {
+        "question_id": "Q039",
+        "query": "Does DESK-243 fit in a room 225.4x111.4 cm with height 128.0 cm?",
+        "expected": [
+          "DESK-243"
+        ],
+        "retrieved_top5": [
+          "LAMP-087",
+          "DESK-027",
+          "SHELF-050",
+          "SHELF-123",
+          "DECOR-198"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.75
+      },
+      {
+        "question_id": "Q040",
+        "query": "Does DECOR-092 fit in a room 52.6x71.5 cm with height 75.6 cm?",
+        "expected": [
+          "DECOR-092"
+        ],
+        "retrieved_top5": [
+          "SHELF-167",
+          "CHAIR-149",
+          "SHELF-134",
+          "TABLE-117",
+          "SOFA-087"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.65
+      },
+      {
+        "question_id": "Q041",
+        "query": "Does DESK-023 fit in a room 148.2x111.0 cm with height 96.0 cm?",
+        "expected": [
+          "DESK-023"
+        ],
+        "retrieved_top5": [
+          "DESK-021",
+          "DECOR-078",
+          "SOFA-046",
+          "BED-031",
+          "DESK-029"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.1
+      },
+      {
+        "question_id": "Q042",
+        "query": "Does TABLE-165 fit in a room 146.9x98.8 cm with height 103.0 cm?",
+        "expected": [
+          "TABLE-165"
+        ],
+        "retrieved_top5": [
+          "TABLE-076",
+          "RUG-115",
+          "LAMP-228",
+          "CHAIR-037",
+          "DESK-050"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.98
+      },
+      {
+        "question_id": "Q043",
+        "query": "Does SHELF-240 fit in a room 145.3x64.6 cm with height 147.3 cm?",
+        "expected": [
+          "SHELF-240"
+        ],
+        "retrieved_top5": [
+          "CHAIR-079",
+          "CHAIR-254",
+          "DESK-063",
+          "CHAIR-002",
+          "SHELF-019"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.97
+      },
+      {
+        "question_id": "Q044",
+        "query": "Does DECOR-129 fit in a room 116.0x30.4 cm with height 132.3 cm?",
+        "expected": [
+          "DECOR-129"
+        ],
+        "retrieved_top5": [
+          "LAMP-138",
+          "DECOR-156",
+          "CHAIR-136",
+          "SHELF-164",
+          "BED-095"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.63
+      },
+      {
+        "question_id": "Q045",
+        "query": "Does BED-152 fit in a room 165.0x247.1 cm with height 84.5 cm?",
+        "expected": [
+          "BED-152"
+        ],
+        "retrieved_top5": [
+          "BED-012",
+          "BED-098",
+          "CHAIR-124",
+          "SHELF-230",
+          "LAMP-004"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.56
+      },
+      {
+        "question_id": "Q046",
+        "query": "Does BED-029 fit in a room 131.5x263.9 cm with height 78.8 cm?",
+        "expected": [
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-235",
+          "RUG-149",
+          "SHELF-021",
+          "DESK-066",
+          "SHELF-152"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.3
+      },
+      {
+        "question_id": "Q047",
+        "query": "Does RUG-193 fit in a room 252.9x504.9 cm with height 25.5 cm?",
+        "expected": [
+          "RUG-193"
+        ],
+        "retrieved_top5": [
+          "CHAIR-150",
+          "TABLE-200",
+          "SOFA-149",
+          "BED-176",
+          "TABLE-049"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 34.93
+      },
+      {
+        "question_id": "Q048",
+        "query": "Does CHAIR-293 fit in a room 74.2x102.0 cm with height 122.8 cm?",
+        "expected": [
+          "CHAIR-293"
+        ],
+        "retrieved_top5": [
+          "LAMP-091",
+          "TABLE-004",
+          "TABLE-215",
+          "TABLE-188",
+          "TABLE-014"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 34.17
+      },
+      {
+        "question_id": "Q049",
+        "query": "Does RUG-167 fit in a room 240.2x397.8 cm with height 57.0 cm?",
+        "expected": [
+          "RUG-167"
+        ],
+        "retrieved_top5": [
+          "CHAIR-093",
+          "DECOR-107",
+          "CHAIR-151",
+          "LAMP-099",
+          "BED-068"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.35
+      },
+      {
+        "question_id": "Q050",
+        "query": "Does TABLE-192 fit in a room 241.3x125.9 cm with height 103.8 cm?",
+        "expected": [
+          "TABLE-192"
+        ],
+        "retrieved_top5": [
+          "DECOR-082",
+          "TABLE-216",
+          "DESK-221",
+          "LAMP-032",
+          "DESK-243"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.66
+      },
+      {
+        "question_id": "Q051",
+        "query": "Compare DESK-180 and DESK-060.",
+        "expected": [
+          "DESK-180",
+          "DESK-060"
+        ],
+        "retrieved_top5": [
+          "SHELF-052",
+          "BED-127",
+          "DESK-179",
+          "DECOR-081",
+          "SHELF-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.36
+      },
+      {
+        "question_id": "Q052",
+        "query": "Compare DECOR-125 and DECOR-019.",
+        "expected": [
+          "DECOR-125",
+          "DECOR-019"
+        ],
+        "retrieved_top5": [
+          "TABLE-140",
+          "RUG-127",
+          "BED-019",
+          "DESK-014",
+          "DESK-070"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.73
+      },
+      {
+        "question_id": "Q053",
+        "query": "Compare DECOR-070 and DECOR-106.",
+        "expected": [
+          "DECOR-070",
+          "DECOR-106"
+        ],
+        "retrieved_top5": [
+          "TABLE-049",
+          "BED-107",
+          "CHAIR-238",
+          "DECOR-043",
+          "TABLE-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.17
+      },
+      {
+        "question_id": "Q054",
+        "query": "Compare SHELF-242 and SHELF-116.",
+        "expected": [
+          "SHELF-242",
+          "SHELF-116"
+        ],
+        "retrieved_top5": [
+          "TABLE-003",
+          "SHELF-242",
+          "CHAIR-293",
+          "LAMP-055",
+          "DESK-145"
+        ],
+        "recall": 0.5,
+        "rr": 0.5,
+        "latency_ms": 21.69
+      },
+      {
+        "question_id": "Q055",
+        "query": "Compare TABLE-034 and TABLE-060.",
+        "expected": [
+          "TABLE-034",
+          "TABLE-060"
+        ],
+        "retrieved_top5": [
+          "TABLE-014",
+          "CHAIR-245",
+          "TABLE-167",
+          "SOFA-126",
+          "TABLE-011"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.73
+      },
+      {
+        "question_id": "Q056",
+        "query": "Compare BED-136 and BED-029.",
+        "expected": [
+          "BED-136",
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-032",
+          "RUG-086",
+          "LAMP-102",
+          "CHAIR-117",
+          "LAMP-135"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.64
+      },
+      {
+        "question_id": "Q057",
+        "query": "Compare BED-084 and BED-128.",
+        "expected": [
+          "BED-084",
+          "BED-128"
+        ],
+        "retrieved_top5": [
+          "DESK-196",
+          "CHAIR-179",
+          "BED-173",
+          "TABLE-239",
+          "RUG-035"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.43
+      },
+      {
+        "question_id": "Q058",
+        "query": "Compare SHELF-233 and SHELF-002.",
+        "expected": [
+          "SHELF-233",
+          "SHELF-002"
+        ],
+        "retrieved_top5": [
+          "DESK-182",
+          "BED-115",
+          "LAMP-242",
+          "LAMP-059",
+          "TABLE-101"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.97
+      },
+      {
+        "question_id": "Q059",
+        "query": "Compare CHAIR-208 and CHAIR-207.",
+        "expected": [
+          "CHAIR-208",
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "CHAIR-201",
+          "DECOR-077",
+          "SHELF-003",
+          "SOFA-022",
+          "BED-117"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.49
+      },
+      {
+        "question_id": "Q060",
+        "query": "Compare LAMP-148 and LAMP-247.",
+        "expected": [
+          "LAMP-148",
+          "LAMP-247"
+        ],
+        "retrieved_top5": [
+          "SOFA-119",
+          "BED-031",
+          "DESK-123",
+          "CHAIR-178",
+          "CHAIR-258"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.18
+      }
+    ],
+    "hybrid_with_rerank": [
+      {
+        "question_id": "Q001",
+        "query": "Show me a office chair.",
+        "expected": [
+          "CHAIR-161"
+        ],
+        "retrieved_top5": [
+          "DESK-007",
+          "CHAIR-102",
+          "BED-018",
+          "SOFA-083",
+          "SOFA-142"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 25.13
+      },
+      {
+        "question_id": "Q002",
+        "query": "Show me a shag rug.",
+        "expected": [
+          "RUG-048"
+        ],
+        "retrieved_top5": [
+          "SOFA-010",
+          "DECOR-138",
+          "SHELF-111",
+          "TABLE-233",
+          "SHELF-182"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.03
+      },
+      {
+        "question_id": "Q003",
+        "query": "Show me a contemporary sofa.",
+        "expected": [
+          "SOFA-103"
+        ],
+        "retrieved_top5": [
+          "DESK-201",
+          "RUG-086",
+          "SHELF-010",
+          "RUG-034",
+          "TABLE-001"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.09
+      },
+      {
+        "question_id": "Q004",
+        "query": "Show me a ergonomic chair.",
+        "expected": [
+          "CHAIR-061"
+        ],
+        "retrieved_top5": [
+          "BED-092",
+          "TABLE-139",
+          "LAMP-216",
+          "TABLE-178",
+          "BED-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.12
+      },
+      {
+        "question_id": "Q005",
+        "query": "Show me a birch desk.",
+        "expected": [
+          "DESK-120"
+        ],
+        "retrieved_top5": [
+          "BED-004",
+          "SHELF-007",
+          "RUG-177",
+          "TABLE-237",
+          "LAMP-170"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.98
+      },
+      {
+        "question_id": "Q006",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-184"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.25
+      },
+      {
+        "question_id": "Q007",
+        "query": "Show me a accent chair.",
+        "expected": [
+          "CHAIR-029"
+        ],
+        "retrieved_top5": [
+          "BED-027",
+          "DESK-065",
+          "CHAIR-257",
+          "TABLE-196",
+          "RUG-053"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.99
+      },
+      {
+        "question_id": "Q008",
+        "query": "Show me a computer desk.",
+        "expected": [
+          "DESK-168"
+        ],
+        "retrieved_top5": [
+          "DESK-222",
+          "DECOR-124",
+          "DESK-056",
+          "LAMP-041",
+          "SOFA-045"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.96
+      },
+      {
+        "question_id": "Q009",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-075"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 19.87
+      },
+      {
+        "question_id": "Q010",
+        "query": "Show me a vase decor.",
+        "expected": [
+          "DECOR-156"
+        ],
+        "retrieved_top5": [
+          "DECOR-068",
+          "SHELF-116",
+          "TABLE-078",
+          "DESK-050",
+          "CHAIR-080"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.05
+      },
+      {
+        "question_id": "Q011",
+        "query": "Show me a mid-century sofa.",
+        "expected": [
+          "SOFA-105"
+        ],
+        "retrieved_top5": [
+          "SOFA-015",
+          "DESK-045",
+          "DECOR-088",
+          "LAMP-125",
+          "SHELF-121"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.73
+      },
+      {
+        "question_id": "Q012",
+        "query": "Show me a nightstand table.",
+        "expected": [
+          "TABLE-237"
+        ],
+        "retrieved_top5": [
+          "RUG-124",
+          "DESK-147",
+          "BED-020",
+          "CHAIR-143",
+          "CHAIR-212"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.15
+      },
+      {
+        "question_id": "Q013",
+        "query": "Show me a linen chair.",
+        "expected": [
+          "CHAIR-276"
+        ],
+        "retrieved_top5": [
+          "RUG-138",
+          "BED-053",
+          "TABLE-149",
+          "BED-020",
+          "CHAIR-270"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 25.43
+      },
+      {
+        "question_id": "Q014",
+        "query": "Show me a bunk bed.",
+        "expected": [
+          "BED-076"
+        ],
+        "retrieved_top5": [
+          "BED-173",
+          "CHAIR-199",
+          "RUG-188",
+          "SHELF-218",
+          "DESK-234"
+        ],
+        "recall": 1.0,
+        "rr": 1.0,
+        "latency_ms": 21.76
+      },
+      {
+        "question_id": "Q015",
+        "query": "Show me a japanese decor.",
+        "expected": [
+          "DECOR-070"
+        ],
+        "retrieved_top5": [
+          "RUG-152",
+          "DESK-079",
+          "TABLE-177",
+          "LAMP-031",
+          "DESK-124"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.01
+      },
+      {
+        "question_id": "Q016",
+        "query": "Show me a chandelier lighting.",
+        "expected": [
+          "LAMP-173"
+        ],
+        "retrieved_top5": [
+          "SHELF-028",
+          "RUG-041",
+          "SOFA-101",
+          "SOFA-078",
+          "SHELF-080"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.48
+      },
+      {
+        "question_id": "Q017",
+        "query": "Show me a brass lighting.",
+        "expected": [
+          "LAMP-099"
+        ],
+        "retrieved_top5": [
+          "DESK-234",
+          "SHELF-123",
+          "BED-114",
+          "DECOR-159",
+          "TABLE-086"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.68
+      },
+      {
+        "question_id": "Q018",
+        "query": "Show me a geometric rug.",
+        "expected": [
+          "RUG-064"
+        ],
+        "retrieved_top5": [
+          "TABLE-215",
+          "SHELF-034",
+          "SHELF-070",
+          "SHELF-180",
+          "BED-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.07
+      },
+      {
+        "question_id": "Q019",
+        "query": "Show me a chaise sofa.",
+        "expected": [
+          "SOFA-099"
+        ],
+        "retrieved_top5": [
+          "RUG-149",
+          "RUG-043",
+          "LAMP-223",
+          "LAMP-005",
+          "DECOR-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.7
+      },
+      {
+        "question_id": "Q020",
+        "query": "Show me a black lighting.",
+        "expected": [
+          "LAMP-163"
+        ],
+        "retrieved_top5": [
+          "LAMP-173",
+          "DESK-005",
+          "CHAIR-052",
+          "DESK-104",
+          "LAMP-176"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.76
+      },
+      {
+        "question_id": "Q021",
+        "query": "What is the price of LAMP-181?",
+        "expected": [
+          "LAMP-181"
+        ],
+        "retrieved_top5": [
+          "LAMP-020",
+          "CHAIR-079",
+          "CHAIR-236",
+          "DECOR-152",
+          "BED-181"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.9
+      },
+      {
+        "question_id": "Q022",
+        "query": "Is DECOR-105 in stock?",
+        "expected": [
+          "DECOR-105"
+        ],
+        "retrieved_top5": [
+          "DECOR-045",
+          "RUG-113",
+          "DECOR-182",
+          "DESK-021",
+          "BED-041"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.6
+      },
+      {
+        "question_id": "Q023",
+        "query": "What is the price of SHELF-231?",
+        "expected": [
+          "SHELF-231"
+        ],
+        "retrieved_top5": [
+          "BED-028",
+          "SHELF-027",
+          "SHELF-039",
+          "CHAIR-246",
+          "DECOR-159"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.82
+      },
+      {
+        "question_id": "Q024",
+        "query": "Is CHAIR-283 in stock?",
+        "expected": [
+          "CHAIR-283"
+        ],
+        "retrieved_top5": [
+          "TABLE-092",
+          "BED-130",
+          "DESK-183",
+          "SHELF-234",
+          "LAMP-221"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.05
+      },
+      {
+        "question_id": "Q025",
+        "query": "What is the price of TABLE-066?",
+        "expected": [
+          "TABLE-066"
+        ],
+        "retrieved_top5": [
+          "TABLE-116",
+          "BED-001",
+          "SHELF-063",
+          "DESK-170",
+          "LAMP-125"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.6
+      },
+      {
+        "question_id": "Q026",
+        "query": "What are the dimensions of DESK-178?",
+        "expected": [
+          "DESK-178"
+        ],
+        "retrieved_top5": [
+          "RUG-167",
+          "SHELF-146",
+          "SHELF-096",
+          "DESK-235",
+          "CHAIR-250"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.69
+      },
+      {
+        "question_id": "Q027",
+        "query": "What are the dimensions of RUG-138?",
+        "expected": [
+          "RUG-138"
+        ],
+        "retrieved_top5": [
+          "TABLE-210",
+          "DECOR-135",
+          "DECOR-133",
+          "CHAIR-057",
+          "BED-055"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.85
+      },
+      {
+        "question_id": "Q028",
+        "query": "What are the dimensions of DESK-155?",
+        "expected": [
+          "DESK-155"
+        ],
+        "retrieved_top5": [
+          "TABLE-208",
+          "TABLE-144",
+          "LAMP-052",
+          "SHELF-054",
+          "BED-196"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.93
+      },
+      {
+        "question_id": "Q029",
+        "query": "Is BED-147 in stock?",
+        "expected": [
+          "BED-147"
+        ],
+        "retrieved_top5": [
+          "LAMP-008",
+          "SOFA-102",
+          "CHAIR-057",
+          "LAMP-019",
+          "SOFA-146"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.94
+      },
+      {
+        "question_id": "Q030",
+        "query": "What are the dimensions of DECOR-079?",
+        "expected": [
+          "DECOR-079"
+        ],
+        "retrieved_top5": [
+          "BED-169",
+          "DESK-054",
+          "CHAIR-197",
+          "SHELF-076",
+          "SHELF-141"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.76
+      },
+      {
+        "question_id": "Q031",
+        "query": "What are the dimensions of DECOR-009?",
+        "expected": [
+          "DECOR-009"
+        ],
+        "retrieved_top5": [
+          "DECOR-191",
+          "RUG-029",
+          "SHELF-142",
+          "DECOR-160",
+          "DESK-208"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.4
+      },
+      {
+        "question_id": "Q032",
+        "query": "What is the price of SHELF-067?",
+        "expected": [
+          "SHELF-067"
+        ],
+        "retrieved_top5": [
+          "DECOR-192",
+          "SHELF-110",
+          "LAMP-158",
+          "RUG-100",
+          "DECOR-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.79
+      },
+      {
+        "question_id": "Q033",
+        "query": "Is DECOR-131 in stock?",
+        "expected": [
+          "DECOR-131"
+        ],
+        "retrieved_top5": [
+          "SOFA-080",
+          "SHELF-153",
+          "LAMP-114",
+          "TABLE-156",
+          "DESK-171"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 20.72
+      },
+      {
+        "question_id": "Q034",
+        "query": "What are the dimensions of LAMP-017?",
+        "expected": [
+          "LAMP-017"
+        ],
+        "retrieved_top5": [
+          "SOFA-104",
+          "TABLE-083",
+          "TABLE-163",
+          "TABLE-002",
+          "CHAIR-065"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.09
+      },
+      {
+        "question_id": "Q035",
+        "query": "Is DESK-179 in stock?",
+        "expected": [
+          "DESK-179"
+        ],
+        "retrieved_top5": [
+          "DESK-135",
+          "SOFA-133",
+          "SHELF-116",
+          "CHAIR-161",
+          "TABLE-194"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.75
+      },
+      {
+        "question_id": "Q036",
+        "query": "Does SHELF-095 fit in a room 153.0x107.2 cm with height 236.4 cm?",
+        "expected": [
+          "SHELF-095"
+        ],
+        "retrieved_top5": [
+          "SHELF-078",
+          "BED-179",
+          "TABLE-226",
+          "BED-113",
+          "SHELF-047"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.93
+      },
+      {
+        "question_id": "Q037",
+        "query": "Does TABLE-204 fit in a room 224.0x126.2 cm with height 66.9 cm?",
+        "expected": [
+          "TABLE-204"
+        ],
+        "retrieved_top5": [
+          "DESK-016",
+          "DECOR-189",
+          "TABLE-234",
+          "BED-002",
+          "TABLE-083"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 38.93
+      },
+      {
+        "question_id": "Q038",
+        "query": "Does CHAIR-207 fit in a room 104.1x83.8 cm with height 91.3 cm?",
+        "expected": [
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "RUG-042",
+          "SOFA-001",
+          "CHAIR-091",
+          "BED-200",
+          "SHELF-215"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.8
+      },
+      {
+        "question_id": "Q039",
+        "query": "Does DESK-243 fit in a room 225.4x111.4 cm with height 128.0 cm?",
+        "expected": [
+          "DESK-243"
+        ],
+        "retrieved_top5": [
+          "LAMP-087",
+          "DESK-027",
+          "SHELF-050",
+          "SHELF-123",
+          "DECOR-198"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 36.88
+      },
+      {
+        "question_id": "Q040",
+        "query": "Does DECOR-092 fit in a room 52.6x71.5 cm with height 75.6 cm?",
+        "expected": [
+          "DECOR-092"
+        ],
+        "retrieved_top5": [
+          "SHELF-167",
+          "CHAIR-149",
+          "SHELF-134",
+          "TABLE-117",
+          "SOFA-087"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 36.06
+      },
+      {
+        "question_id": "Q041",
+        "query": "Does DESK-023 fit in a room 148.2x111.0 cm with height 96.0 cm?",
+        "expected": [
+          "DESK-023"
+        ],
+        "retrieved_top5": [
+          "DESK-021",
+          "DECOR-078",
+          "SOFA-046",
+          "BED-031",
+          "DESK-029"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 36.83
+      },
+      {
+        "question_id": "Q042",
+        "query": "Does TABLE-165 fit in a room 146.9x98.8 cm with height 103.0 cm?",
+        "expected": [
+          "TABLE-165"
+        ],
+        "retrieved_top5": [
+          "TABLE-076",
+          "RUG-115",
+          "LAMP-228",
+          "CHAIR-037",
+          "DESK-050"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 38.85
+      },
+      {
+        "question_id": "Q043",
+        "query": "Does SHELF-240 fit in a room 145.3x64.6 cm with height 147.3 cm?",
+        "expected": [
+          "SHELF-240"
+        ],
+        "retrieved_top5": [
+          "CHAIR-079",
+          "CHAIR-254",
+          "DESK-063",
+          "CHAIR-002",
+          "SHELF-019"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.14
+      },
+      {
+        "question_id": "Q044",
+        "query": "Does DECOR-129 fit in a room 116.0x30.4 cm with height 132.3 cm?",
+        "expected": [
+          "DECOR-129"
+        ],
+        "retrieved_top5": [
+          "LAMP-138",
+          "DECOR-156",
+          "CHAIR-136",
+          "SHELF-164",
+          "BED-095"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.24
+      },
+      {
+        "question_id": "Q045",
+        "query": "Does BED-152 fit in a room 165.0x247.1 cm with height 84.5 cm?",
+        "expected": [
+          "BED-152"
+        ],
+        "retrieved_top5": [
+          "BED-012",
+          "BED-098",
+          "CHAIR-124",
+          "SHELF-230",
+          "LAMP-004"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 37.26
+      },
+      {
+        "question_id": "Q046",
+        "query": "Does BED-029 fit in a room 131.5x263.9 cm with height 78.8 cm?",
+        "expected": [
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-235",
+          "RUG-149",
+          "SHELF-021",
+          "DESK-066",
+          "SHELF-152"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 38.93
+      },
+      {
+        "question_id": "Q047",
+        "query": "Does RUG-193 fit in a room 252.9x504.9 cm with height 25.5 cm?",
+        "expected": [
+          "RUG-193"
+        ],
+        "retrieved_top5": [
+          "CHAIR-150",
+          "TABLE-200",
+          "SOFA-149",
+          "BED-176",
+          "TABLE-049"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.76
+      },
+      {
+        "question_id": "Q048",
+        "query": "Does CHAIR-293 fit in a room 74.2x102.0 cm with height 122.8 cm?",
+        "expected": [
+          "CHAIR-293"
+        ],
+        "retrieved_top5": [
+          "LAMP-091",
+          "TABLE-004",
+          "TABLE-215",
+          "TABLE-188",
+          "TABLE-014"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 36.4
+      },
+      {
+        "question_id": "Q049",
+        "query": "Does RUG-167 fit in a room 240.2x397.8 cm with height 57.0 cm?",
+        "expected": [
+          "RUG-167"
+        ],
+        "retrieved_top5": [
+          "CHAIR-093",
+          "DECOR-107",
+          "CHAIR-151",
+          "LAMP-099",
+          "BED-068"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 35.59
+      },
+      {
+        "question_id": "Q050",
+        "query": "Does TABLE-192 fit in a room 241.3x125.9 cm with height 103.8 cm?",
+        "expected": [
+          "TABLE-192"
+        ],
+        "retrieved_top5": [
+          "DECOR-082",
+          "TABLE-216",
+          "DESK-221",
+          "LAMP-032",
+          "DESK-243"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 38.14
+      },
+      {
+        "question_id": "Q051",
+        "query": "Compare DESK-180 and DESK-060.",
+        "expected": [
+          "DESK-180",
+          "DESK-060"
+        ],
+        "retrieved_top5": [
+          "SHELF-052",
+          "BED-127",
+          "DESK-179",
+          "DECOR-081",
+          "SHELF-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.57
+      },
+      {
+        "question_id": "Q052",
+        "query": "Compare DECOR-125 and DECOR-019.",
+        "expected": [
+          "DECOR-125",
+          "DECOR-019"
+        ],
+        "retrieved_top5": [
+          "TABLE-140",
+          "RUG-127",
+          "BED-019",
+          "DESK-014",
+          "DESK-070"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.44
+      },
+      {
+        "question_id": "Q053",
+        "query": "Compare DECOR-070 and DECOR-106.",
+        "expected": [
+          "DECOR-070",
+          "DECOR-106"
+        ],
+        "retrieved_top5": [
+          "TABLE-049",
+          "BED-107",
+          "CHAIR-238",
+          "DECOR-043",
+          "TABLE-010"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.47
+      },
+      {
+        "question_id": "Q054",
+        "query": "Compare SHELF-242 and SHELF-116.",
+        "expected": [
+          "SHELF-242",
+          "SHELF-116"
+        ],
+        "retrieved_top5": [
+          "TABLE-003",
+          "SHELF-242",
+          "CHAIR-293",
+          "LAMP-055",
+          "DESK-145"
+        ],
+        "recall": 0.5,
+        "rr": 0.5,
+        "latency_ms": 21.27
+      },
+      {
+        "question_id": "Q055",
+        "query": "Compare TABLE-034 and TABLE-060.",
+        "expected": [
+          "TABLE-034",
+          "TABLE-060"
+        ],
+        "retrieved_top5": [
+          "TABLE-014",
+          "CHAIR-245",
+          "TABLE-167",
+          "SOFA-126",
+          "TABLE-011"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 24.17
+      },
+      {
+        "question_id": "Q056",
+        "query": "Compare BED-136 and BED-029.",
+        "expected": [
+          "BED-136",
+          "BED-029"
+        ],
+        "retrieved_top5": [
+          "DESK-032",
+          "RUG-086",
+          "LAMP-102",
+          "CHAIR-117",
+          "LAMP-135"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 21.28
+      },
+      {
+        "question_id": "Q057",
+        "query": "Compare BED-084 and BED-128.",
+        "expected": [
+          "BED-084",
+          "BED-128"
+        ],
+        "retrieved_top5": [
+          "DESK-196",
+          "CHAIR-179",
+          "BED-173",
+          "TABLE-239",
+          "RUG-035"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.68
+      },
+      {
+        "question_id": "Q058",
+        "query": "Compare SHELF-233 and SHELF-002.",
+        "expected": [
+          "SHELF-233",
+          "SHELF-002"
+        ],
+        "retrieved_top5": [
+          "DESK-182",
+          "BED-115",
+          "LAMP-242",
+          "LAMP-059",
+          "TABLE-101"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.03
+      },
+      {
+        "question_id": "Q059",
+        "query": "Compare CHAIR-208 and CHAIR-207.",
+        "expected": [
+          "CHAIR-208",
+          "CHAIR-207"
+        ],
+        "retrieved_top5": [
+          "CHAIR-201",
+          "DECOR-077",
+          "SHELF-003",
+          "SOFA-022",
+          "BED-117"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 22.18
+      },
+      {
+        "question_id": "Q060",
+        "query": "Compare LAMP-148 and LAMP-247.",
+        "expected": [
+          "LAMP-148",
+          "LAMP-247"
+        ],
+        "retrieved_top5": [
+          "SOFA-119",
+          "BED-031",
+          "DESK-123",
+          "CHAIR-178",
+          "CHAIR-258"
+        ],
+        "recall": 0.0,
+        "rr": 0.0,
+        "latency_ms": 23.61
+      }
+    ]
+  }
+}

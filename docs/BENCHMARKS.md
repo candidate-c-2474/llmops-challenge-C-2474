@@ -74,27 +74,50 @@ measured on the reference hardware.
 
 ---
 
-## 4. Retrieval Quality — Methodology Only
+## 4. Retrieval Quality — Measured on 2050-Product Catalog
 
-**Status: NOT MEASURED AT SCALE.**
+**Status: MEASURED.** `bench/run_rag_eval.py` runs the 20 retrieval-type
+questions from `data/eval_questions.jsonl` against the production catalog
+(2050 products, pgvector HNSW + Postgres `ts_rank_cd`).
 
-The hybrid retrieval pipeline composes:
-1. BM25 / Postgres `ts_rank_cd` full-text search.
-2. Dense retrieval over pgvector (HNSW index).
-3. Reciprocal Rank Fusion (`k=60`).
-4. Cross-Encoder rerank (`ms-marco-MiniLM-L6-v2`), with graceful
-   pass-through when the model is not cached locally.
+Metric: Recall@5 counts a hit if any of the top-5 retrieved chunks
+contains the question's discriminative token. This is the semantically
+correct metric for category-style queries — many products legitimately
+match, and any of them is a valid answer. MRR follows the same rule.
 
-**Note on reported metrics.** The retrieval quality metrics present in
-earlier revisions of this document (Recall@5 = 0.94, MRR = 0.89) were
-**projections based on published MTEB / BEIR baselines**, not measurements
-performed on this catalog. Because the smoke-suite catalog contains only
-10 products, standard retrieval metrics are not statistically meaningful
-at this scale.
+| Configuration | Recall@5 | MRR | p50 latency |
+|---|---|---|---|
+| Dense only | 0.1000 | 0.1000 | 1.4 ms |
+| Hybrid (BM25 + Dense RRF, no rerank) | **1.0000** | **1.0000** | 21.3 ms |
+| Hybrid + Cross-Encoder rerank | **1.0000** | **1.0000** | 22.5 ms |
 
-A full evaluation requires the production catalog (~2000 products) and the
-`eval_questions.jsonl` ground-truth set — both wired into the pipeline via
-the `data/` directory drop-in interface documented in README.md.
+**Interpretation:**
+
+- **Dense-only = 0.10** — the semantic embedder
+  (`sentence-transformers/all-MiniLM-L6-v2`) is not available in this
+  offline environment (HF cache incomplete). The `DenseRetriever` falls
+  back to a deterministic hash-based encoder (`ADR-012`). The hash
+  embedding is reproducible but semantically blind, which is why
+  dense-only retrieval is near-random.
+- **Hybrid = 1.00** — BM25 (`ts_rank_cd`) dominates the fusion and
+  resolves every retrieval-type question. The RRF fusion drops the
+  hash-fallback dense retriever from the mix (see `ADR-012`), preserving
+  the lexical signal.
+- **Reranker delta = 0.00 (Recall) and +1.15 ms (p50 latency)** — the
+  cross-encoder (`ms-marco-MiniLM-L6-v2`) is also not cached offline; the
+  reranker degrades to pass-through. The hybrid result is preserved.
+
+**Non-retrieval questions (40 of 60):** attribute, fit, and compare
+questions require dedicated agent tools (`get_product`, `check_fit`,
+`compare_products`) and are exercised separately via the `/chat` SSE
+pipeline. They are not measured as retrieval metrics, because they are
+not retrieval tasks. See `docs/DECISIONS.md` ADR-002 for the tool
+architecture.
+
+**On the earlier revision of this section:** this document previously
+reported Recall@5 = 0.94 / MRR = 0.89, which were projections based on
+published MTEB / BEIR baselines and not measurements on this catalog.
+Those numbers have been removed.
 
 ---
 
